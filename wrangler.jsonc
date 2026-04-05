@@ -1,0 +1,33 @@
+{
+	"$schema": "./node_modules/wrangler/config-schema.json",
+	"compatibility_date": "2026-04-04",
+
+	"name": "destination-pike",
+	"preview_urls": true,
+	"workers_dev": true,
+	"routes": [
+		{
+			"custom_domain": true,
+			"pattern": "destinationpike.com",
+		},
+		{
+			"custom_domain": true,
+			"pattern": "www.destinationpike.com",
+		},
+	],
+
+	"assets": {
+		"directory": "./build/",
+		"html_handling": "auto-trailing-slash",
+	},
+
+	"observability": {
+		"enabled": true,
+		"logs": {
+			"enabled": true,
+			"head_sampling_rate": 1,
+			"invocation_logs": true,
+			"persist": true,
+		},
+	},
+}

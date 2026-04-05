@@ -1,3 +1,1 @@
-#see https://developers.cloudflare.com/pages/get-started/direct-upload/#wrangler-cli
-
-npx wrangler pages deploy ./build --branch=dev --project-name destinationpike
+npx wrangler versions upload
