@@ -286,7 +286,7 @@ const Layers = ({ value, option, onChange, values }) => {
 			</DndContext>
 
 			<button
-				className="button"
+				className="ct-ui-button"
 				onClick={(e) => {
 					e.preventDefault()
 					addForId()

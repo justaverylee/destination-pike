@@ -113,7 +113,15 @@ let allFrontendEntryPoints = [
 	},
 
 	{
-		els: '.ct-pagination:not([data-pagination="simple"])',
+		els: '.ct-pagination[data-pagination="load_more"] .ct-load-more',
+		load: () => import('./frontend/layouts/infinite-scroll'),
+		trigger: [{ id: 'click', once: true }],
+		mount: ({ mount, el, event }) =>
+			mount(el.closest('.ct-pagination'), { event })
+	},
+
+	{
+		els: '.ct-pagination[data-pagination="infinite_scroll"]',
 		load: () => import('./frontend/layouts/infinite-scroll'),
 		trigger: ['scroll']
 	},
