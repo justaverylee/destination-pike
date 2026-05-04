@@ -188,7 +188,7 @@ const OptionsActions = ({ option, option: { areas, prefix }, onChangeFor }) => {
 							className="ct-modal-actions has-divider"
 							data-buttons="2">
 							<button
-								className="button"
+								className="ct-ui-button"
 								onClick={(e) => {
 									setIsOverlayOpen(false)
 									e.preventDefault()
@@ -197,7 +197,7 @@ const OptionsActions = ({ option, option: { areas, prefix }, onChangeFor }) => {
 								{__('Cancel', 'blocksy')}
 							</button>
 							<button
-								className={classnames('button button-primary', {
+								className={classnames('ct-ui-button ct-ui-button-primary', {
 									disabled:
 										!currentPrefix || !currentOptionsArea,
 								})}

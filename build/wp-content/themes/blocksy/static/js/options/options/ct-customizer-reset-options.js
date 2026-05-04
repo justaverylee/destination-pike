@@ -8,7 +8,7 @@ const CustomizerResetOptions = ({ value, option, onChange }) => {
 	return (
 		<Fragment>
 			<button
-				className="button-primary"
+				className="ct-ui-button ct-ui-button-primary"
 				style={{ width: '100%' }}
 				onClick={(e) => {
 					e.preventDefault()

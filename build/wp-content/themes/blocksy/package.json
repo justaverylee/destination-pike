@@ -1,6 +1,6 @@
 {
 	"name": "small-ct",
-	"version": "2.1.37",
+	"version": "2.1.40",
 	"title": "Blocksy",
 	"browserslist": "> 1%, not opera > 0, not op_mini all",
 	"devDependencies": {
@@ -25,7 +25,8 @@
 		"sync-google-fonts": "env-cmd --silent node scripts/sync-google-fonts.js",
 		"test": "NODE_ENV=test jest",
 		"create-issues-changelogs": "env-cmd --silent node scripts/create-issues-changelogs.js",
-		"set-issue-data": "env-cmd --silent node scripts/set-issue-data.js"
+		"set-issue-data": "env-cmd --silent node scripts/set-issue-data.js",
+		"make-theme-zip": "cross-env NODE_ENV=production gulp build_zips --silent && rm -rf build_tmp/blocksy && cp -R build_tmp/build build_tmp/blocksy"
 	},
 	"dependencies": {
 		"@creative-themes/build-process": "6.0.25",

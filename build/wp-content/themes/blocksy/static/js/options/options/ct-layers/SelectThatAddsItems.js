@@ -70,9 +70,9 @@ const SelectThatAddsItems = ({ value, option }) => {
 
 			<button
 				type="button"
-				className="button button-primary"
+				className="ct-ui-button ct-ui-button-primary"
 				onClick={() => addCurrentlySelectedItem()}>
-				<svg width="10" height="10" viewBox="0 0 17 17">
+				<svg width="10" height="10" fill="currentColor" viewBox="0 0 17 17">
 					<path d="M17,10h-7v7H7v-7H0V7h7V0h3v7h7V10z" />
 				</svg>
 			</button>

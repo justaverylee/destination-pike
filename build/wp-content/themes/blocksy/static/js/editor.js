@@ -140,6 +140,8 @@ const BlocksyOptions = ({ name, value, options, onChange, isActive }) => {
 	}
 
 	useEffect(() => {
+		listenToChange()
+
 		return () => {
 			if (controller) {
 				controller.abort()

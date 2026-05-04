@@ -124,7 +124,7 @@ export default class MultiImageUploader extends Component {
 								)}
 							<button
 								type="button"
-								className="button edit-button control-focus"
+								className="ct-ui-button edit-button control-focus"
 								title="Edit"
 								onClick={() => open()}>
 								{__('Add/Edit Gallery', 'blocksy')}

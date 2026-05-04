@@ -82,7 +82,7 @@ export default class ImageUploader extends Component {
 					/>
 
 					<button
-						className="button"
+						className="ct-ui-button"
 						onClick={() => this.openFrame()}>
 						{__('Choose File', 'blocksy')}
 					</button>

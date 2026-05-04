@@ -87,7 +87,7 @@ InfiniteScroll.prototype.onPageScroll = InfiniteScroll.throttle(function () {
 	}
 })
 
-export const mount = (paginationContainer) => {
+export const mount = (paginationContainer, { event } = {}) => {
 	let layoutEl = [...paginationContainer.parentNode.children]
 		.reduce(
 			(a, c) => {
@@ -204,6 +204,14 @@ export const mount = (paginationContainer) => {
 	})
 
 	paginationContainer.infiniteScroll = inf
+
+	if (paginationType === 'load_more' && event) {
+		const loadMoreButton = paginationContainer.querySelector('.ct-load-more')
+
+		if (loadMoreButton) {
+			setTimeout(() => loadMoreButton.click())
+		}
+	}
 }
 
 function getAppendSelectorFor(layoutEl, args = {}) {
