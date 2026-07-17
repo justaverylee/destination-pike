@@ -174,7 +174,7 @@ h1:where(.wp-block-heading).has-background,h2:where(.wp-block-heading).has-backg
 
 
 
-<h2 class="wp-block-heading">What would you like a redesign to save space for?</h2>
+<h2 class="wp-block-heading">What people want Destination Pike to save space for?</h2>
 
 
 
@@ -228,19 +228,27 @@ async function renderWordCloud() {
 }
 </script>
 
-<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async="" defer=""></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/wordcloud2.js/1.1.1/wordcloud2.min.js"></script>
-
-<form action="/wordcloud" method="POST">
-  <label for="name">Your Name: </label><input type="text" name="name" autofill="name" placeholder="Your Name" required="" maxlength="150">
-  <label for="word">What you’d like to see</label><input type="text" name="word" placeholder="Your dream destination includes" required="" maxlength="50">
-<p>Please submit one thing that you’d like to see in the streets of Pike. You can submit multiple</p>
-<div class="cf-turnstile" data-sitekey="0x4AAAAAAD3t6i0VSEkU0Clt" data-response-field-name="token"></div>
- <button type="submit">Add to word cloud</button></form>
 
 <div id="canvas-container">
   <canvas id="wordcloud"></canvas>
 </div>
+
+
+
+<h3 class="wp-block-heading">Submit your own idea </h3>
+
+
+
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async="" defer=""></script>
+
+
+<form action="/wordcloud" method="POST">
+  <label for="name">Your Name</label><input type="text" name="name" autofill="name" placeholder="Your Name" required="" maxlength="150">
+  <label for="word">What you’d like to see</label><input type="text" name="word" placeholder="Your dream destination includes" required="" maxlength="50">
+<p>Please submit one thing that you’d like to see in the streets of Pike. You can submit multiple</p>
+<div class="cf-turnstile" data-sitekey="0x4AAAAAAD3t6i0VSEkU0Clt" data-response-field-name="token"></div>
+ <button type="submit">Add to word cloud</button></form>
 
 
 
