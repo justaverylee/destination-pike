@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "itty-router": "^5.0.24",
     "wrangler": "^4.80.0"
   }
 }

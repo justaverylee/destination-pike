@@ -3,6 +3,7 @@
 	"compatibility_date": "2026-04-04",
 
 	"name": "destination-pike",
+	"main": "./src/index.js",
 	"preview_urls": true,
 	"workers_dev": true,
 	"routes": [
@@ -19,8 +20,27 @@
 	"assets": {
 		"directory": "./build/",
 		"html_handling": "auto-trailing-slash",
-		"not_found_handling": "404-page"
+		"not_found_handling": "404-page",
+		"run_worker_first": [
+			"/wordcloud"
+		],
 	},
+
+	"secrets_store_secrets": [
+		{
+			"binding": "wordcloudTurnstileSecret",
+			"store_id": "3d5a953b43d04149827e03bbb5d15d70",
+			"secret_name": "destination_pike_wordcloud_turnstile"
+		}
+	],
+
+	"d1_databases": [
+		{
+			"binding": "wordcloudDB",
+			"database_name": "destination_pike_wordcloud",
+			"database_id": "4876107f-1a64-4610-98c8-86ff868b3b8d"
+		}
+	],
 
 	"observability": {
 		"enabled": true,

@@ -1,0 +1,408 @@
+/**
+ * SDAweb Calendar Sync — list/agenda view styles.
+ *
+ * Three coordinated layers:
+ *   - chip-style variants (linear / boxed / card) drive the row container's
+ *     framing. linear is the new default — no border, just a colored left edge
+ *     so typography carries the visual weight. boxed preserves the pre-0.4.18
+ *     bordered look; card adds a soft elevation.
+ *   - heading-position variants (inline / pill-left / centered) drive how the
+ *     day-group heading visually anchors its events.
+ *   - universal hover + :focus-visible polish so each row reads as the link
+ *     it is, regardless of chip style.
+ */
+
+.sdaweb-gcal--list {
+	display: flex;
+	flex-direction: column;
+	gap: var( --sdaweb-gcal-spacing );
+}
+
+.sdaweb-gcal-list__group {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+/* Heading — inline (default, current behavior) */
+.sdaweb-gcal--list .sdaweb-gcal-list__group-heading,
+.sdaweb-gcal--list.heading-position-inline .sdaweb-gcal-list__group-heading {
+	/* Typography lift (0.19.0): a touch larger + more open tracking so the
+	   week/day divider reads as a confident section label in the editorial,
+	   type-led list. */
+	font-size: calc( var( --sdaweb-gcal-font-size-sm ) * 1.15 );
+	font-weight: var( --sdaweb-gcal-font-weight-bold );
+	color: var( --sdaweb-gcal-color-text-muted );
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	margin: 0 0 6px;
+	padding: 0 0 6px;
+	border-bottom: 1px solid var( --sdaweb-gcal-color-border );
+}
+
+/* Heading — pill-left (Tockify-style inverted block + extending line) */
+.sdaweb-gcal--list.heading-position-pill-left .sdaweb-gcal-list__group {
+	position: relative;
+	padding-block-start: 4px;
+	overflow: hidden;
+}
+
+.sdaweb-gcal--list.heading-position-pill-left .sdaweb-gcal-list__group-heading {
+	display: inline-block;
+	background: var( --sdaweb-gcal-color-primary );
+	color: var( --sdaweb-gcal-color-on-primary, #fff );
+	padding: 4px 12px;
+	border-radius: 3px;
+	font-size: var( --sdaweb-gcal-font-size-sm );
+	font-weight: var( --sdaweb-gcal-font-weight-bold );
+	letter-spacing: 0.05em;
+	text-transform: uppercase;
+	margin: 0 0 12px;
+	position: relative;
+	z-index: 1;
+	border: 0;
+	align-self: flex-start;
+}
+
+.sdaweb-gcal--list.heading-position-pill-left .sdaweb-gcal-list__group-heading::after {
+	content: '';
+	position: absolute;
+	inset-inline-start: 100%;
+	inset-block-start: 50%;
+	width: 100vw;
+	height: 1px;
+	background: var( --sdaweb-gcal-color-border );
+}
+
+/* Heading — centered (minimalist, ornament below) */
+.sdaweb-gcal--list.heading-position-centered .sdaweb-gcal-list__group-heading {
+	text-align: center;
+	margin: 16px 0 12px;
+	padding: 0;
+	border: 0;
+	font-size: var( --sdaweb-gcal-font-size-sm );
+	font-weight: var( --sdaweb-gcal-font-weight-bold );
+	text-transform: uppercase;
+	letter-spacing: 0.1em;
+	color: var( --sdaweb-gcal-color-text-muted );
+}
+
+.sdaweb-gcal--list.heading-position-centered .sdaweb-gcal-list__group-heading::after {
+	content: '';
+	display: block;
+	width: 1.5em;
+	height: 1px;
+	background: var( --sdaweb-gcal-color-primary );
+	margin: 8px auto 0;
+	opacity: 0.4;
+}
+
+/*
+ * Two-level grouping (group=month_with_weeks): month is the outer <h3>
+ * (styled by the heading-position-* selectors above) and week is an inner
+ * <h4>. The inner heading is intentionally always inline regardless of the
+ * outer heading-position so nested pills/centered headings don't double up.
+ */
+.sdaweb-gcal-list__subgroup {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	margin-block-start: 12px;
+}
+
+.sdaweb-gcal-list__subgroup:first-child {
+	margin-block-start: 4px;
+}
+
+.sdaweb-gcal-list__subgroup-heading {
+	/* 0.19.0: bumped from 0.92x → 1x and dropped the 0.85 opacity (it double-muted
+	   on top of the already-muted colour) so the week sub-label stays legible
+	   under a month group heading. */
+	font-size: var( --sdaweb-gcal-font-size-sm );
+	font-weight: var( --sdaweb-gcal-font-weight-bold );
+	color: var( --sdaweb-gcal-color-text-muted );
+	letter-spacing: 0.04em;
+	text-transform: none;
+	margin: 0 0 2px;
+	padding: 0;
+}
+
+.sdaweb-gcal-list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+
+/*
+ * Row container — universal grid layout. Time column auto-sizes to its
+ * content (with a min so single- and multi-digit hours align), title column
+ * grows. align-items:baseline lines time + title at their text baselines for
+ * an editorial, agenda-like read.
+ */
+.sdaweb-gcal--list .sdaweb-gcal-event {
+	display: grid;
+	grid-template-columns: max-content 1fr;
+	column-gap: 16px;
+	/* Anchor the title block to the top of the row regardless of whether the
+	 * time-column collapses to one line (all-day) or stacks date + time on two
+	 * lines (timed events). Previously align-items:baseline aligned the title
+	 * to whichever baseline the time column produced, which made timed rows
+	 * appear ragged when sitting next to all-day rows. */
+	align-items: start;
+	/* Reserve a baseline row height so all-day and timed rows feel
+	 * consistent in a mixed list — the accent bar (linear chip-style) and
+	 * the row background (boxed/card) cover at least this height even when
+	 * only one short line of text is present. */
+	min-height: 48px;
+	padding: 12px 16px;
+	margin: 0;
+	background: transparent;
+	border: 0;
+	border-radius: 0;
+	box-shadow: none;
+	transition: background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+/* Linear chip-style — new default. Apply also when no chip-style class is on
+ * the wrapper (covers existing displays that have chip_style=solid|pastel,
+ * which only affect Month view, so list view falls back to linear). */
+.sdaweb-gcal--list.chip-style-linear .sdaweb-gcal-event,
+.sdaweb-gcal--list:not( [class*="chip-style-"] ) .sdaweb-gcal-event {
+	border-inline-start: 3px solid var( --sdaweb-gcal-event-color, var( --sdaweb-gcal-color-primary ) );
+	padding-inline-start: 16px;
+}
+
+/* Boxed chip-style — preserves the pre-0.4.18 bordered look. */
+.sdaweb-gcal--list.chip-style-boxed .sdaweb-gcal-event {
+	background: var( --sdaweb-gcal-color-surface );
+	border: 1px solid var( --sdaweb-gcal-color-border );
+	border-radius: var( --sdaweb-gcal-radius );
+	padding: 10px 12px;
+}
+
+/* Card chip-style — soft shadow, app-like surface. */
+.sdaweb-gcal--list.chip-style-card .sdaweb-gcal-event {
+	background: var( --sdaweb-gcal-color-surface );
+	border-radius: 8px;
+	box-shadow: 0 1px 3px rgba( 0, 0, 0, 0.06 ), 0 1px 2px rgba( 0, 0, 0, 0.04 );
+	padding: 14px 16px;
+}
+
+/* Universal hover — subtle background tint via per-calendar event color
+ * (falls back to primary so existing displays without a per-calendar
+ * color set keep the brand-rød tint they had before). */
+.sdaweb-gcal--list .sdaweb-gcal-event:hover,
+.sdaweb-gcal--list .sdaweb-gcal-event:focus-within {
+	background: color-mix( in srgb, var( --sdaweb-gcal-event-color, var( --sdaweb-gcal-color-primary ) ) 5%, transparent );
+}
+
+/* Linear hover — left edge thickens to reinforce affordance.
+ * Total left = 5px border + 14px padding = 19px ≈ original 3+16=19, no shift. */
+.sdaweb-gcal--list.chip-style-linear .sdaweb-gcal-event:hover,
+.sdaweb-gcal--list.chip-style-linear .sdaweb-gcal-event:focus-within,
+.sdaweb-gcal--list:not( [class*="chip-style-"] ) .sdaweb-gcal-event:hover,
+.sdaweb-gcal--list:not( [class*="chip-style-"] ) .sdaweb-gcal-event:focus-within {
+	border-inline-start-width: 5px;
+	padding-inline-start: 14px;
+}
+
+/* Card hover — shadow lifts. */
+.sdaweb-gcal--list.chip-style-card .sdaweb-gcal-event:hover,
+.sdaweb-gcal--list.chip-style-card .sdaweb-gcal-event:focus-within {
+	box-shadow: 0 4px 12px rgba( 0, 0, 0, 0.08 ), 0 2px 4px rgba( 0, 0, 0, 0.06 );
+	transform: translateY( -1px );
+}
+
+/* Boxed hover — keep the colored-border idiom from the pre-0.4.18 look. */
+.sdaweb-gcal--list.chip-style-boxed .sdaweb-gcal-event:hover,
+.sdaweb-gcal--list.chip-style-boxed .sdaweb-gcal-event:focus-within {
+	border-color: var( --sdaweb-gcal-color-primary );
+}
+
+.sdaweb-gcal-event--cancelled {
+	opacity: 0.55;
+	text-decoration: line-through;
+}
+
+.sdaweb-gcal--list .sdaweb-gcal-event__time {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	justify-content: flex-end;
+	gap: 4px;
+	min-width: 3.5rem;
+	color: var( --sdaweb-gcal-color-text-muted );
+	font-variant-numeric: tabular-nums;
+	font-size: var( --sdaweb-gcal-font-size-sm );
+	white-space: nowrap;
+}
+
+.sdaweb-gcal-event--allday .sdaweb-gcal-event__alllday {
+	font-weight: var( --sdaweb-gcal-font-weight-bold );
+	color: var( --sdaweb-gcal-color-primary );
+	text-transform: uppercase;
+	font-size: 0.75rem;
+	letter-spacing: 0.05em;
+}
+
+.sdaweb-gcal-event__time-sep {
+	color: var( --sdaweb-gcal-color-border );
+}
+
+.sdaweb-gcal-event__date {
+	/* Take the full width of the time column so the start/end time below
+	 * always wraps to the next line (used by the default "beside_date"
+	 * time-placement layout). The "below_title" and "inline_before_title"
+	 * layouts emit no sibling time elements in this column, so flex-basis
+	 * has no visible effect there. */
+	flex-basis: 100%;
+	font-weight: var( --sdaweb-gcal-font-weight-bold );
+	color: var( --sdaweb-gcal-color-primary );
+	text-transform: uppercase;
+	font-size: 0.75rem;
+	letter-spacing: 0.04em;
+}
+
+/*
+ * Time placement: below_title (v0.4.30+, opt-in). Time + location +
+ * description form one metadata block beneath the title in the body
+ * column. Matches the pattern used by The Events Calendar, Sugar Calendar,
+ * MEC and other major WP calendar plugins. Best for content-rich rows.
+ */
+.sdaweb-gcal-event__meta-time {
+	color: var( --sdaweb-gcal-color-text-muted );
+	font-variant-numeric: tabular-nums;
+	font-size: var( --sdaweb-gcal-font-size-sm );
+	display: flex;
+	flex-wrap: wrap;
+	align-items: baseline;
+	gap: 4px;
+}
+
+/* All-day tag inside the body meta line — quieter than the column-heading
+ * version since it sits with location/description, not on its own. */
+.sdaweb-gcal-event__meta-time .sdaweb-gcal-event__alllday {
+	font-weight: var( --sdaweb-gcal-font-weight-bold );
+	color: var( --sdaweb-gcal-color-text-muted );
+	text-transform: uppercase;
+	font-size: 0.75rem;
+	letter-spacing: 0.05em;
+}
+
+/*
+ * Time placement: inline_before_title (v0.4.30+, opt-in). Time prefixes
+ * the title on the same line: "10:30 – 11:30 BibelPizza...". Compact
+ * enough for dense daily agendas. Time inherits muted-meta color so the
+ * title still gets primary visual weight; matches the Google Calendar
+ * Schedule view and Apple Calendar List view pattern.
+ */
+.sdaweb-gcal-event__title-time {
+	color: var( --sdaweb-gcal-color-text-muted );
+	font-weight: var( --sdaweb-gcal-font-weight-normal, 400 );
+	font-variant-numeric: tabular-nums;
+	font-size: 0.92em;
+	margin-inline-end: 8px;
+	white-space: nowrap;
+}
+
+.sdaweb-gcal--list .sdaweb-gcal-event__body {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+	min-width: 0;
+}
+
+.sdaweb-gcal-event__title {
+	font-size: var( --sdaweb-gcal-font-size-base );
+	font-weight: var( --sdaweb-gcal-font-weight-bold );
+	margin: 0;
+	color: var( --sdaweb-gcal-color-text );
+	line-height: 1.35;
+}
+
+.sdaweb-gcal-event__title a {
+	color: inherit;
+	text-decoration: none;
+}
+
+.sdaweb-gcal-event__title a:hover {
+	color: var( --sdaweb-gcal-color-primary );
+	text-decoration: underline;
+	text-underline-offset: 3px;
+}
+
+.sdaweb-gcal--list .sdaweb-gcal-event__title a:focus-visible {
+	outline: 2px solid var( --sdaweb-gcal-color-primary );
+	outline-offset: 2px;
+	border-radius: 2px;
+	color: var( --sdaweb-gcal-color-primary );
+	text-decoration: underline;
+	text-underline-offset: 3px;
+}
+
+.sdaweb-gcal-event__calendar {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	font-size: var( --sdaweb-gcal-font-size-sm );
+	color: var( --sdaweb-gcal-color-text-muted );
+}
+
+.sdaweb-gcal-event__calendar-dot {
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	background: var( --sdaweb-gcal-event-color, var( --sdaweb-gcal-color-accent ) );
+	flex: 0 0 auto;
+}
+
+.sdaweb-gcal-event__calendar--dot {
+	gap: 0;
+}
+
+.sdaweb-gcal-event__location {
+	color: var( --sdaweb-gcal-color-text-muted );
+	font-size: var( --sdaweb-gcal-font-size-sm );
+}
+
+.sdaweb-gcal-event__description {
+	color: var( --sdaweb-gcal-color-text-muted );
+	font-size: var( --sdaweb-gcal-font-size-sm );
+	margin-top: 4px;
+}
+
+@media ( max-width: 540px ) {
+	.sdaweb-gcal--list .sdaweb-gcal-event {
+		grid-template-columns: 1fr;
+		column-gap: 0;
+		row-gap: 4px;
+		padding: 10px 12px;
+	}
+	.sdaweb-gcal--list.chip-style-linear .sdaweb-gcal-event,
+	.sdaweb-gcal--list:not( [class*="chip-style-"] ) .sdaweb-gcal-event {
+		padding-inline-start: 12px;
+	}
+	.sdaweb-gcal--list.chip-style-linear .sdaweb-gcal-event:hover,
+	.sdaweb-gcal--list.chip-style-linear .sdaweb-gcal-event:focus-within,
+	.sdaweb-gcal--list:not( [class*="chip-style-"] ) .sdaweb-gcal-event:hover,
+	.sdaweb-gcal--list:not( [class*="chip-style-"] ) .sdaweb-gcal-event:focus-within {
+		padding-inline-start: 10px;
+	}
+	.sdaweb-gcal--list .sdaweb-gcal-event__time {
+		justify-content: flex-start;
+		min-width: 0;
+		font-size: 0.8125rem;
+	}
+}
+
+@media ( prefers-reduced-motion: reduce ) {
+	.sdaweb-gcal--list .sdaweb-gcal-event {
+		transition: none !important;
+	}
+	.sdaweb-gcal--list.chip-style-card .sdaweb-gcal-event:hover {
+		transform: none;
+	}
+}
