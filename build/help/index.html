@@ -186,7 +186,7 @@ h1:where(.wp-block-heading).has-background,h2:where(.wp-block-heading).has-backg
 #canvas-container {
   width: 80%;
   max-width: 800px;
-  height: 200px;
+  height: 300px;
   background-color: #ffffff;
   border-radius: 12px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
@@ -220,7 +220,7 @@ async function renderWordCloud() {
     list: data,
     gridSize: 10,
     weightFactor: function (freq) {      
-      return Math.pow(freq, 2) * 30 * canvas.width / 800; 
+      return freq * 20 * canvas.width / 800; 
     },
     fontFamily: 'Segoe UI, Arial, sans-serif',
     color: 'random-dark', // Automatically color words in random dark tones
