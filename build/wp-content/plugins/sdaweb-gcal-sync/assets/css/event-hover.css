@@ -1,0 +1,215 @@
+/*
+ * SDAweb Calendar Sync — event hover popover.
+ *
+ * One popover element per display, repositioned + reskinned on hover/focus.
+ * White card with date
+ * header + event title; flips above/below the chip based on viewport.
+ *
+ * Desktop hover only — mobile/touch users get the regular click-through.
+ * Activated by JS adding `is-open` and inline transform; CSS owns the
+ * visual treatment, animations, and responsive bottom-sheet rules if a
+ * follow-up wants them.
+ */
+
+.sdaweb-gcal-event-hover {
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 100000;
+	width: 280px;
+	max-width: calc( 100vw - 24px );
+	padding: 0;
+	/* Hard fallbacks on every var() — the popover is appended to document.body
+	 * and lives outside the [data-sdaweb-gcal-id] scope where the plugin's CSS
+	 * variables are defined, so var() references would otherwise evaluate to
+	 * `unset` and the background would be transparent. */
+	background: var( --sdaweb-gcal-color-surface, #ffffff );
+	color: var( --sdaweb-gcal-color-text, #1d2327 );
+	border: 1px solid var( --sdaweb-gcal-color-border, #dcdcde );
+	border-radius: 8px;
+	box-shadow: 0 8px 32px rgba( 0, 0, 0, 0.14 );
+	font-size: var( --sdaweb-gcal-font-size-sm, 0.875rem );
+	opacity: 0;
+	transform: scale( 0.96 ) translateY( -2px );
+	transform-origin: top left;
+	pointer-events: none;
+	transition: opacity 0.14s cubic-bezier( 0.16, 1, 0.3, 1 ), transform 0.14s cubic-bezier( 0.16, 1, 0.3, 1 );
+}
+
+.sdaweb-gcal-event-hover[hidden] {
+	display: none;
+}
+
+.sdaweb-gcal-event-hover.is-open {
+	opacity: 1;
+	transform: scale( 1 ) translateY( 0 );
+	pointer-events: auto;
+}
+
+.sdaweb-gcal-event-hover.is-flipped {
+	transform-origin: bottom left;
+}
+
+/* Caret */
+
+.sdaweb-gcal-event-hover__caret {
+	position: absolute;
+	width: 12px;
+	height: 12px;
+	background: inherit;
+	border: 1px solid var( --sdaweb-gcal-color-border, #dcdcde );
+	transform: rotate( 45deg );
+	pointer-events: none;
+}
+
+.sdaweb-gcal-event-hover:not( .is-flipped ) .sdaweb-gcal-event-hover__caret {
+	top: -7px;
+	border-right: 0;
+	border-bottom: 0;
+}
+
+.sdaweb-gcal-event-hover.is-flipped .sdaweb-gcal-event-hover__caret {
+	bottom: -7px;
+	border-left: 0;
+	border-top: 0;
+}
+
+/* Header */
+
+.sdaweb-gcal-event-hover__header {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	padding: 8px 12px 6px;
+	border-bottom: 1px solid var( --sdaweb-gcal-color-border, #dcdcde );
+	background: color-mix( in srgb, var( --sdaweb-gcal-event-color, var( --sdaweb-gcal-color-primary, #1d5a8e ) ) 12%, var( --sdaweb-gcal-color-surface, #ffffff ) );
+}
+
+.sdaweb-gcal-event-hover__date {
+	font-weight: var( --sdaweb-gcal-font-weight-bold, 600 );
+	color: var( --sdaweb-gcal-color-text, #1d2327 );
+	flex: 1 1 auto;
+	min-width: 0;
+}
+
+.sdaweb-gcal-event-hover__cal-dot {
+	display: inline-block;
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	background: var( --sdaweb-gcal-event-color, var( --sdaweb-gcal-color-primary, #1d5a8e ) );
+	flex: 0 0 auto;
+}
+
+/* Body */
+
+.sdaweb-gcal-event-hover__body {
+	padding: 8px 12px 10px;
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+
+.sdaweb-gcal-event-hover__title {
+	font-size: 0.9375rem;
+	font-weight: var( --sdaweb-gcal-font-weight-bold, 600 );
+	margin: 0;
+	color: var( --sdaweb-gcal-color-text, #1d2327 );
+	line-height: 1.3;
+}
+
+.sdaweb-gcal-event-hover__title a {
+	color: inherit;
+	text-decoration: none;
+}
+
+.sdaweb-gcal-event-hover__title a:hover,
+.sdaweb-gcal-event-hover__title a:focus-visible {
+	text-decoration: underline;
+}
+
+/* Whole-card click target (0.22.0). When the event has a link, a stretched
+ * overlay on the title anchor extends its hit area across the entire popover
+ * — so a tap anywhere on the card follows the link. Mainly helps the second
+ * tap on touch (the first tap opens the popover). The title stays the real,
+ * focusable anchor; this only enlarges its target. `inset: 0` resolves against
+ * the popover, which is `position: fixed`. The trade-off is that the card-wide
+ * overlay intercepts text selection — accepted in favour of the larger target. */
+.sdaweb-gcal-event-hover.is-linked {
+	cursor: pointer;
+}
+
+.sdaweb-gcal-event-hover.is-linked .sdaweb-gcal-event-hover__title a::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	z-index: 1;
+}
+
+.sdaweb-gcal-event-hover__time,
+.sdaweb-gcal-event-hover__location,
+.sdaweb-gcal-event-hover__calendar,
+.sdaweb-gcal-event-hover__recurrence {
+	font-size: 0.8125rem;
+	color: var( --sdaweb-gcal-color-text-muted, #646970 );
+	display: flex;
+	align-items: center;
+	gap: 4px;
+}
+
+.sdaweb-gcal-event-hover__time {
+	font-variant-numeric: tabular-nums;
+}
+
+.sdaweb-gcal-event-hover__description {
+	margin-top: 4px;
+	font-size: 0.8125rem;
+	color: var( --sdaweb-gcal-color-text, #1d2327 );
+	line-height: 1.4;
+}
+
+.sdaweb-gcal-event-hover__icon {
+	width: 12px;
+	height: 12px;
+	flex: 0 0 auto;
+	color: var( --sdaweb-gcal-color-text-muted, #646970 );
+}
+
+/* Touch devices: the popover is hidden by default so touch users get the
+ * regular click-through. A display can opt in (event_hover_touch) — JS then
+ * stamps `.sdaweb-gcal-touch-tap` on its popover and we allow it to render.
+ * The JS is the primary gate (it also decides whether to suppress the chip's
+ * navigation); this CSS is the backstop that keeps non-opted-in popovers
+ * invisible on touch. Detected via pointer + hover capability media queries. */
+@media ( hover: none ) or ( pointer: coarse ) {
+	.sdaweb-gcal-event-hover:not( .sdaweb-gcal-touch-tap ) {
+		display: none !important;
+	}
+}
+
+/* Phones never show the popover, even on an opted-in display: re-hide across
+ * the phone band that the Month→Mini auto-degrade uses (≤600px, plus phones
+ * held in landscape). Tablets (≥601px portrait/landscape) fall through and the
+ * opted-in popover renders. Mirrors the trigger in view-month.css. */
+@media ( ( hover: none ) or ( pointer: coarse ) ) and ( max-width: 600px ) {
+	.sdaweb-gcal-event-hover {
+		display: none !important;
+	}
+}
+@media ( ( hover: none ) or ( pointer: coarse ) ) and ( orientation: landscape ) and ( max-height: 500px ) {
+	.sdaweb-gcal-event-hover {
+		display: none !important;
+	}
+}
+
+@media ( prefers-reduced-motion: reduce ) {
+	.sdaweb-gcal-event-hover {
+		transition: none !important;
+	}
+}
+
+@media print {
+	.sdaweb-gcal-event-hover {
+		display: none !important;
+	}
+}

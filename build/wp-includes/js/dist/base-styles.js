@@ -1,1 +1,3 @@
- 
+var wp;
+(wp ||= {}).baseStyles = (() => {
+})();

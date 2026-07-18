@@ -1,0 +1,429 @@
+/*
+ * SDAweb Calendar Sync — mini-month view.
+ *
+ * Compact month grid for sidebars. Day cells are square; events appear as up
+ * to 3 colored dots beneath the day number. Tapping a cell pops a panel
+ * *below the grid* with the day's events. The popover area is part of the
+ * mini wrapper (no positioning relative to the cell), which keeps the layout
+ * stable inside narrow sidebars.
+ */
+
+.sdaweb-gcal--mini {
+	max-width: 360px;
+	font-size: 0.875rem;
+}
+
+/*
+ * Mini's chrome bar adapts via the container-query cascade in front.css —
+ * search collapses to icon-trigger, ICS Subscribe goes icon-only, and the
+ * "Today" button drops at very narrow widths. No view-specific overrides
+ * needed; the bar's title font size is tuned via --sdaweb-gcal-chrome-title-size
+ * on .sdaweb-gcal--mini in front.css.
+ */
+
+.sdaweb-gcal-mini__grid {
+	border: 1px solid var( --sdaweb-gcal-color-border );
+	border-radius: var( --sdaweb-gcal-radius );
+	overflow: hidden;
+	background: var( --sdaweb-gcal-color-surface );
+}
+
+.sdaweb-gcal-mini__weekdays {
+	display: grid;
+	grid-template-columns: repeat( 7, 1fr );
+	background: var( --sdaweb-gcal-color-surface-alt );
+	border-bottom: 1px solid var( --sdaweb-gcal-color-border );
+}
+
+.sdaweb-gcal--mini.has-week-numbers .sdaweb-gcal-mini__weekdays,
+.sdaweb-gcal--mini.has-week-numbers .sdaweb-gcal-mini__row {
+	grid-template-columns: 22px repeat( 7, 1fr );
+}
+
+.sdaweb-gcal-mini__weekday {
+	padding: 6px 0 4px;
+	text-align: center;
+	font-size: 0.6875rem;
+	font-weight: var( --sdaweb-gcal-font-weight-bold );
+	color: var( --sdaweb-gcal-color-text-muted );
+	letter-spacing: 0.04em;
+	text-transform: lowercase;
+}
+
+.sdaweb-gcal-mini__row {
+	display: grid;
+	grid-template-columns: repeat( 7, 1fr );
+}
+
+.sdaweb-gcal-mini__weeknum {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 0.6875rem;
+	font-weight: var( --sdaweb-gcal-font-weight-bold );
+	color: var( --sdaweb-gcal-color-text-muted );
+	background: var( --sdaweb-gcal-color-surface-alt );
+	font-variant-numeric: tabular-nums;
+}
+
+.sdaweb-gcal-mini__weeknum--head {
+	padding: 6px 0 4px;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+}
+
+.sdaweb-gcal-mini__cell {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: flex-start;
+	gap: 2px;
+	padding: 4px 0 6px;
+	min-height: 40px;
+	background: transparent;
+	border: 0;
+	font: inherit;
+	color: inherit;
+	cursor: pointer;
+	border-radius: 6px;
+	transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.sdaweb-gcal-mini__cell:hover:not( [aria-disabled="true"] ),
+.sdaweb-gcal-mini__cell:focus-visible {
+	background: color-mix( in srgb, var( --sdaweb-gcal-color-primary ) 8%, transparent );
+}
+
+.sdaweb-gcal-mini__cell.is-outside {
+	color: var( --sdaweb-gcal-color-text-muted );
+	opacity: 0.55;
+}
+
+.sdaweb-gcal-mini__cell.is-today .sdaweb-gcal-mini__day-number {
+	background: var( --sdaweb-gcal-color-today, var( --sdaweb-gcal-color-primary ) );
+	color: #fff;
+	border-radius: 50%;
+}
+
+.sdaweb-gcal-mini__cell.is-selected {
+	background: color-mix( in srgb, var( --sdaweb-gcal-color-primary ) 14%, transparent );
+}
+
+.sdaweb-gcal-mini__cell[aria-disabled="true"] {
+	cursor: default;
+}
+
+.sdaweb-gcal-mini__day-number {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 24px;
+	height: 24px;
+	font-size: 0.8125rem;
+	font-weight: 500;
+	line-height: 1;
+	font-variant-numeric: tabular-nums;
+}
+
+.sdaweb-gcal-mini__dots {
+	display: inline-flex;
+	gap: 3px;
+	align-items: center;
+	min-height: 6px;
+}
+
+.sdaweb-gcal-mini__dot {
+	display: inline-block;
+	width: 5px;
+	height: 5px;
+	border-radius: 50%;
+	background: currentColor;
+}
+
+.sdaweb-gcal-mini__dot--more {
+	width: auto;
+	height: auto;
+	background: transparent;
+	color: var( --sdaweb-gcal-color-text-muted );
+	font-size: 0.6875rem;
+	font-weight: var( --sdaweb-gcal-font-weight-bold );
+	line-height: 1;
+}
+
+/* Below-grid panel (default state and day-detail share this container) */
+
+.sdaweb-gcal-mini__panel {
+	margin-top: 8px;
+	padding: 10px 12px 10px;
+	border: 1px solid var( --sdaweb-gcal-color-border );
+	border-radius: var( --sdaweb-gcal-radius );
+	background: var( --sdaweb-gcal-color-surface );
+	box-shadow: 0 4px 18px rgba( 0, 0, 0, 0.06 );
+	opacity: 1;
+	transform: translateY( 0 );
+	transition: opacity 0.18s cubic-bezier( 0.16, 1, 0.3, 1 ), transform 0.18s cubic-bezier( 0.16, 1, 0.3, 1 );
+}
+
+.sdaweb-gcal-mini__panel[hidden] {
+	display: none;
+}
+
+/*
+ * Honor the `hidden` attribute on panel children. Without these rules the
+ * class-level `display: inline-flex` / `inline-block` declarations below win
+ * over the user-agent `[hidden] { display: none }` on equal specificity, so
+ * JS toggling `.hidden = true` has no visible effect. Symptom: the close (X)
+ * button stays visible in default mode (clicks become no-ops since we are
+ * already in default), and the "Load more" button stays visible after all
+ * upcoming events are revealed (clicks become no-ops since visibleCount has
+ * already reached upcoming.length).
+ */
+.sdaweb-gcal-mini__panel-back[hidden],
+.sdaweb-gcal-mini__panel-close[hidden],
+.sdaweb-gcal-mini__load-more[hidden],
+.sdaweb-gcal-mini__full-link[hidden] {
+	display: none;
+}
+
+.sdaweb-gcal-mini__panel-header {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	margin-bottom: 6px;
+}
+
+.sdaweb-gcal-mini__panel-title {
+	font-size: 0.875rem;
+	font-weight: var( --sdaweb-gcal-font-weight-bold );
+	margin: 0;
+	color: var( --sdaweb-gcal-color-text );
+	flex: 1 1 auto;
+	min-width: 0;
+}
+
+.sdaweb-gcal-mini__panel-back,
+.sdaweb-gcal-mini__panel-close {
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	padding: 4px 6px;
+	background: transparent;
+	border: 0;
+	color: var( --sdaweb-gcal-color-text-muted );
+	border-radius: 4px;
+	cursor: pointer;
+	font: inherit;
+	font-size: 0.75rem;
+	transition: background-color 0.15s ease;
+}
+
+.sdaweb-gcal-mini__panel-back:hover,
+.sdaweb-gcal-mini__panel-back:focus-visible,
+.sdaweb-gcal-mini__panel-close:hover,
+.sdaweb-gcal-mini__panel-close:focus-visible {
+	background: var( --sdaweb-gcal-color-surface-alt );
+	color: var( --sdaweb-gcal-color-text );
+}
+
+.sdaweb-gcal-mini__panel-back svg,
+.sdaweb-gcal-mini__panel-close svg {
+	width: 12px;
+	height: 12px;
+}
+
+.sdaweb-gcal-mini__panel-body {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+}
+
+.sdaweb-gcal-mini__panel-empty {
+	font-size: 0.8125rem;
+	color: var( --sdaweb-gcal-color-text-muted );
+	margin: 0;
+	padding: 4px 0;
+}
+
+/* Default-state event row: date + title + meta */
+.sdaweb-gcal-mini__panel-event {
+	display: flex;
+	gap: 8px;
+	align-items: flex-start;
+	padding: 6px 8px;
+	border-radius: 6px;
+	background: var( --sdaweb-gcal-color-surface-alt );
+	border-inline-start: 3px solid var( --sdaweb-gcal-event-color, var( --sdaweb-gcal-color-primary ) );
+	font-size: 0.8125rem;
+	transition: background-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+/* Day-link affordance — whole row becomes tappable, switches panel to that
+ * event's full day on activation. */
+.sdaweb-gcal-mini__panel-event[data-sdaweb-gcal-mini-day-link] {
+	cursor: pointer;
+}
+
+.sdaweb-gcal-mini__panel-event[data-sdaweb-gcal-mini-day-link]:hover {
+	background: color-mix( in srgb, var( --sdaweb-gcal-color-primary ) 8%, var( --sdaweb-gcal-color-surface-alt ) );
+}
+
+.sdaweb-gcal-mini__panel-event[data-sdaweb-gcal-mini-day-link]:focus-visible {
+	outline: 2px solid var( --sdaweb-gcal-color-primary );
+	outline-offset: 2px;
+}
+
+.sdaweb-gcal-mini__panel-event-date {
+	font-weight: var( --sdaweb-gcal-font-weight-bold );
+	color: var( --sdaweb-gcal-color-text );
+	font-variant-numeric: tabular-nums;
+	flex: 0 0 auto;
+	min-width: 4em;
+}
+
+.sdaweb-gcal-mini__panel-event-body {
+	display: flex;
+	flex-direction: column;
+	gap: 1px;
+	min-width: 0;
+	flex: 1 1 auto;
+}
+
+.sdaweb-gcal-mini__panel-event-title {
+	font-weight: 500;
+	color: var( --sdaweb-gcal-color-text );
+}
+
+.sdaweb-gcal-mini__panel-event-title a {
+	color: inherit;
+	text-decoration: none;
+}
+
+.sdaweb-gcal-mini__panel-event-title a:hover {
+	text-decoration: underline;
+}
+
+.sdaweb-gcal-mini__panel-event-time {
+	font-size: 0.75rem;
+	color: var( --sdaweb-gcal-color-text-muted );
+	font-variant-numeric: tabular-nums;
+}
+
+.sdaweb-gcal-mini__panel-event-location {
+	font-size: 0.75rem;
+	color: var( --sdaweb-gcal-color-text-muted );
+}
+
+.sdaweb-gcal-mini__panel-footer {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+	margin-top: 8px;
+	padding-top: 8px;
+	border-top: 1px solid var( --sdaweb-gcal-color-border );
+}
+
+.sdaweb-gcal-mini__panel-footer:empty {
+	display: none;
+}
+
+.sdaweb-gcal-mini__load-more {
+	display: inline-block;
+	width: 100%;
+	padding: 6px 8px;
+	background: transparent;
+	border: 0;
+	color: var( --sdaweb-gcal-color-primary );
+	font: inherit;
+	font-size: 0.8125rem;
+	font-weight: 500;
+	text-align: center;
+	cursor: pointer;
+	border-radius: 4px;
+	transition: background-color 0.15s ease;
+}
+
+.sdaweb-gcal-mini__load-more:hover,
+.sdaweb-gcal-mini__load-more:focus-visible {
+	background: color-mix( in srgb, var( --sdaweb-gcal-color-primary ) 8%, transparent );
+}
+
+.sdaweb-gcal-mini__full-link {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 4px;
+	padding: 4px 6px;
+	font-size: 0.75rem;
+	color: var( --sdaweb-gcal-color-text-muted );
+	text-decoration: none;
+}
+
+.sdaweb-gcal-mini__full-link:hover,
+.sdaweb-gcal-mini__full-link:focus-visible {
+	color: var( --sdaweb-gcal-color-primary );
+	text-decoration: underline;
+}
+
+.sdaweb-gcal-mini__full-link svg {
+	width: 12px;
+	height: 12px;
+	flex: 0 0 auto;
+}
+
+/* Day-mode event rows (rendered by mini-month.js's buildDayNode) — keep
+ * the __popover-event class names for back-compat with the JS. */
+
+.sdaweb-gcal-mini__popover-event {
+	display: flex;
+	gap: 8px;
+	align-items: flex-start;
+	padding: 6px 8px;
+	border-radius: 6px;
+	background: var( --sdaweb-gcal-color-surface-alt );
+	border-inline-start: 3px solid var( --sdaweb-gcal-event-color, var( --sdaweb-gcal-color-primary ) );
+	font-size: 0.8125rem;
+}
+
+.sdaweb-gcal-mini__popover-event-time {
+	font-weight: var( --sdaweb-gcal-font-weight-bold );
+	color: var( --sdaweb-gcal-color-text-muted );
+	font-variant-numeric: tabular-nums;
+	flex: 0 0 auto;
+	min-width: 4em;
+}
+
+.sdaweb-gcal-mini__popover-event-body {
+	display: flex;
+	flex-direction: column;
+	gap: 1px;
+	min-width: 0;
+	flex: 1 1 auto;
+}
+
+.sdaweb-gcal-mini__popover-event-title {
+	font-weight: 500;
+	color: var( --sdaweb-gcal-color-text );
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.sdaweb-gcal-mini__popover-event-title a {
+	color: inherit;
+	text-decoration: none;
+}
+
+.sdaweb-gcal-mini__popover-event-title a:hover {
+	text-decoration: underline;
+}
+
+.sdaweb-gcal-mini__popover-event-location {
+	font-size: 0.75rem;
+	color: var( --sdaweb-gcal-color-text-muted );
+}
+
+@media ( prefers-reduced-motion: reduce ) {
+	.sdaweb-gcal-mini__panel,
+	.sdaweb-gcal-mini__cell {
+		transition: none !important;
+	}
+}

@@ -1,0 +1,595 @@
+/**
+ * SDAweb Calendar Sync — month grid view styles.
+ */
+
+.sdaweb-gcal--month {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+.sdaweb-gcal-month__grid {
+	border: 1px solid var( --sdaweb-gcal-color-border );
+	border-radius: var( --sdaweb-gcal-radius );
+	overflow: hidden;
+	background: var( --sdaweb-gcal-color-surface );
+}
+
+.sdaweb-gcal-month__weekdays {
+	display: grid;
+	grid-template-columns: repeat( 7, 1fr );
+	background: var( --sdaweb-gcal-color-surface-alt );
+	border-bottom: 1px solid var( --sdaweb-gcal-color-border );
+}
+
+.sdaweb-gcal--month.has-week-numbers .sdaweb-gcal-month__weekdays,
+.sdaweb-gcal--month.has-week-numbers .sdaweb-gcal-month__row {
+	grid-template-columns: 32px repeat( 7, 1fr );
+}
+
+.sdaweb-gcal-month__weeknum {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: var( --sdaweb-gcal-font-size-sm );
+	font-weight: var( --sdaweb-gcal-font-weight-bold );
+	color: var( --sdaweb-gcal-color-text-muted );
+	background: var( --sdaweb-gcal-color-surface-alt );
+	border-inline-end: 1px solid var( --sdaweb-gcal-color-border );
+	font-variant-numeric: tabular-nums;
+}
+
+.sdaweb-gcal-month__weeknum--head {
+	padding: 8px 4px;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+}
+
+.sdaweb-gcal-month__weekday {
+	padding: 8px 6px;
+	text-align: center;
+	font-size: var( --sdaweb-gcal-font-size-sm );
+	font-weight: 500;
+	color: var( --sdaweb-gcal-color-text-muted );
+	letter-spacing: 0.02em;
+}
+
+.sdaweb-gcal-month__row {
+	display: grid;
+	grid-template-columns: repeat( 7, 1fr );
+	grid-auto-rows: auto;
+	border-bottom: 1px solid var( --sdaweb-gcal-color-border );
+	min-height: 110px;
+}
+
+/*
+ * Multi-day ribbon spans. Each ribbon is a grid item that occupies
+ * `grid-column: <start> / span <len>` on a lane row above the cells.
+ * Cells push to `grid-row: var(--sdaweb-gcal-cell-row)` which the renderer
+ * sets per-row based on lane count, so cells always render below ribbons.
+ */
+.sdaweb-gcal-month__row .sdaweb-gcal-month__cell {
+	grid-row: var( --sdaweb-gcal-cell-row, -1 );
+}
+
+.sdaweb-gcal-month__ribbon {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+	padding: 2px 6px;
+	margin: 1px 2px;
+	background: color-mix( in srgb, var( --sdaweb-gcal-event-color, var( --sdaweb-gcal-color-accent ) ) 20%, var( --sdaweb-gcal-color-surface ) );
+	color: var( --sdaweb-gcal-color-text );
+	border-inline-start: 3px solid var( --sdaweb-gcal-event-color, var( --sdaweb-gcal-color-accent ) );
+	border-radius: 3px;
+	font-size: 0.75rem;
+	font-weight: 500;
+	line-height: 1.4;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	min-width: 0;
+}
+
+.sdaweb-gcal-month__ribbon a,
+.sdaweb-gcal-month__ribbon a:link,
+.sdaweb-gcal-month__ribbon a:visited {
+	color: inherit;
+	text-decoration: none;
+	display: inline-block;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	max-width: 100%;
+}
+
+.sdaweb-gcal-month__ribbon a:hover,
+.sdaweb-gcal-month__ribbon a:focus-visible {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.sdaweb-gcal-month__ribbon-prefix {
+	font-weight: var( --sdaweb-gcal-font-weight-bold );
+	opacity: 0.8;
+	margin-inline-end: 2px;
+}
+
+.sdaweb-gcal-month__ribbon-title {
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.sdaweb-gcal-month__ribbon-arrow {
+	flex: 0 0 auto;
+	font-weight: var( --sdaweb-gcal-font-weight-bold );
+	color: var( --sdaweb-gcal-event-color, var( --sdaweb-gcal-color-accent ) );
+	font-size: 0.875rem;
+	line-height: 1;
+}
+
+.sdaweb-gcal-month__ribbon.is-clipped-start {
+	border-start-start-radius: 0;
+	border-end-start-radius: 0;
+	border-inline-start: 0;
+}
+
+.sdaweb-gcal-month__ribbon.is-clipped-end {
+	border-start-end-radius: 0;
+	border-end-end-radius: 0;
+}
+
+.sdaweb-gcal-month__ribbon.is-cancelled {
+	opacity: 0.6;
+	text-decoration: line-through;
+}
+
+/* Pastel chip variant also makes ribbons match — already pastel by default,
+ * but solid chip mode should keep ribbons visually consistent. (Ribbons stay
+ * pastel always; spanning bars work poorly with solid color blocks.) */
+
+.sdaweb-gcal--month.has-week-numbers .sdaweb-gcal-month__row .sdaweb-gcal-month__weeknum:not( .sdaweb-gcal-month__weeknum--head ) {
+	min-height: 0;
+}
+
+.sdaweb-gcal-month__row:last-child {
+	border-bottom: 0;
+}
+
+.sdaweb-gcal-month__cell {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+	padding: 6px;
+	border-inline-end: 1px solid var( --sdaweb-gcal-color-border );
+	min-width: 0;
+}
+
+.sdaweb-gcal-month__cell:last-child {
+	border-inline-end: 0;
+}
+
+.sdaweb-gcal-month__cell.is-outside {
+	background: var( --sdaweb-gcal-color-surface-alt );
+	color: var( --sdaweb-gcal-color-text-muted );
+}
+
+.sdaweb-gcal-month__cell.is-outside .sdaweb-gcal-month__day-number {
+	opacity: 0.5;
+}
+
+.sdaweb-gcal-month__cell.is-today {
+	background: color-mix( in srgb, var( --sdaweb-gcal-color-today, var( --sdaweb-gcal-color-primary ) ) 8%, var( --sdaweb-gcal-color-surface ) );
+}
+
+/*
+ * Today column highlight (today_style=column). Tints the entire column
+ * — header + every cell down the column — for a "today
+ * is this whole strip" emphasis. Gentler tint (5%) than the cell
+ * highlight (8%) so the today cell still pops within its column.
+ */
+.sdaweb-gcal-month__weekday.is-today-column {
+	background: color-mix( in srgb, var( --sdaweb-gcal-color-today, var( --sdaweb-gcal-color-primary ) ) 12%, var( --sdaweb-gcal-color-surface-alt ) );
+	border-top: 3px solid var( --sdaweb-gcal-color-today, var( --sdaweb-gcal-color-primary ) );
+	margin-top: -3px;
+	padding-top: 5px;
+}
+
+.sdaweb-gcal-month__cell.is-today-column:not( .is-today ) {
+	background: color-mix( in srgb, var( --sdaweb-gcal-color-today, var( --sdaweb-gcal-color-primary ) ) 4%, var( --sdaweb-gcal-color-surface ) );
+}
+
+.sdaweb-gcal-month__cell.is-today-column.is-outside {
+	background: color-mix( in srgb, var( --sdaweb-gcal-color-today, var( --sdaweb-gcal-color-primary ) ) 6%, var( --sdaweb-gcal-color-surface-alt ) );
+}
+
+.sdaweb-gcal-month__day-number {
+	font-size: var( --sdaweb-gcal-font-size-sm );
+	font-weight: var( --sdaweb-gcal-font-weight-bold );
+	color: var( --sdaweb-gcal-color-text-muted );
+	align-self: flex-start;
+	padding: 2px 4px;
+	border-radius: 4px;
+	min-width: 1.5em;
+	text-align: center;
+}
+
+.sdaweb-gcal-month__cell.is-today .sdaweb-gcal-month__day-number {
+	background: var( --sdaweb-gcal-color-today, var( --sdaweb-gcal-color-primary ) );
+	color: #fff;
+}
+
+.sdaweb-gcal-month__events {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+	min-width: 0;
+}
+
+/*
+ * Tockify-style chip: wraps full title across multiple lines so visitors see
+ * everything inline — no popover needed on touch, no truncation. Cells grow
+ * vertically to fit content. Time prefix (when present) sits on its own line
+ * above the title so the title gets the full chip width.
+ */
+.sdaweb-gcal-month__event {
+	background: var( --sdaweb-gcal-event-color, var( --sdaweb-gcal-color-accent ) );
+	color: var( --sdaweb-gcal-event-text, #fff );
+	padding: 4px 6px;
+	border-radius: 3px;
+	font-size: 0.75rem;
+	line-height: 1.35;
+	min-width: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 1px;
+	word-break: break-word;
+	overflow-wrap: anywhere;
+}
+
+/*
+ * Pastel chip variant (chip_style=pastel on the display). Soft tinted
+ * background of the feed color + dark text + saturated left border —
+ * for a softer overall look. Multi-feed displays read
+ * much more clearly because chips are no longer dominated by saturated
+ * fill, and feed color now reads as an *accent*, not a background.
+ *
+ * Text color falls through `--sdaweb-gcal-event-text` so the same per-chip
+ * resolver that drives Solid chips (chip_text_mode + per-calendar override,
+ * computed against the *pastel-tinted* background, not the raw feed) also
+ * drives Pastel. Fallback is the plugin's dark text variable so Pastel
+ * chips with no per-chip override keep their pre-0.9.0 look.
+ */
+.sdaweb-gcal--month.chip-style-pastel .sdaweb-gcal-month__event {
+	background: color-mix( in srgb, var( --sdaweb-gcal-event-color, var( --sdaweb-gcal-color-accent ) ) 18%, var( --sdaweb-gcal-color-surface ) );
+	color: var( --sdaweb-gcal-event-text, var( --sdaweb-gcal-color-text ) );
+	border-inline-start: 3px solid var( --sdaweb-gcal-event-color, var( --sdaweb-gcal-color-accent ) );
+	padding-inline-start: 6px;
+}
+
+.sdaweb-gcal--month.chip-style-pastel .sdaweb-gcal-month__event.is-allday {
+	border-inline-start: 3px solid var( --sdaweb-gcal-event-color, var( --sdaweb-gcal-color-accent ) );
+}
+
+/*
+ * Chip-title anchor states. All five link pseudo-classes are pinned to
+ * `color: inherit` so the resolved chip text color (--sdaweb-gcal-event-text,
+ * set inline per chip by Month_Renderer) always wins.
+ *
+ * `:visited` matters because `.sdaweb-gcal a:visited` in front.css (0,0,2,1)
+ * would otherwise out-specify the resting `.sdaweb-gcal-month__event a`
+ * (0,0,2,0) — so once a visitor clicks a chip link and returns, the chip
+ * title would flip to the global link color, breaking the chip-text resolver
+ * (Auto-mode WCAG choice, per-calendar override, Tinted result — all lost).
+ * Listing the states explicitly bumps specificity past `:visited`.
+ *
+ * `:hover` / `:focus-visible` get the same treatment plus an underline
+ * affordance with breathing room (the 0.8.4 fix).
+ */
+.sdaweb-gcal-month__event a,
+.sdaweb-gcal-month__event a:link,
+.sdaweb-gcal-month__event a:visited {
+	color: inherit;
+	text-decoration: none;
+	display: flex;
+	flex-direction: column;
+	gap: 1px;
+	word-break: break-word;
+	overflow-wrap: anywhere;
+}
+
+.sdaweb-gcal-month__event a:hover,
+.sdaweb-gcal-month__event a:focus-visible {
+	color: inherit;
+	text-decoration: underline;
+	text-underline-offset: 2px;
+}
+
+.sdaweb-gcal-month__event.is-allday {
+	border-inline-start: 3px solid #fff;
+}
+
+.sdaweb-gcal-month__event.is-cancelled {
+	opacity: 0.6;
+	text-decoration: line-through;
+}
+
+.sdaweb-gcal-month__event-time {
+	font-weight: var( --sdaweb-gcal-font-weight-bold );
+	opacity: 0.9;
+	font-size: 0.6875rem;
+	letter-spacing: 0.01em;
+}
+
+.sdaweb-gcal-month__event-title {
+	word-break: break-word;
+	overflow-wrap: anywhere;
+}
+
+.sdaweb-gcal-month__overflow {
+	font-size: 0.75rem;
+	color: var( --sdaweb-gcal-color-text-muted );
+	font-weight: var( --sdaweb-gcal-font-weight-bold );
+	padding: 1px 4px;
+}
+
+@media ( max-width: 720px ) {
+	.sdaweb-gcal-month__row {
+		min-height: 72px;
+	}
+	.sdaweb-gcal-month__event {
+		font-size: 0.6875rem;
+		padding: 1px 4px;
+	}
+	.sdaweb-gcal-month__event-time {
+		display: none;
+	}
+	.sdaweb-gcal--month.has-week-numbers .sdaweb-gcal-month__weekdays,
+	.sdaweb-gcal--month.has-week-numbers .sdaweb-gcal-month__row {
+		grid-template-columns: 22px repeat( 7, 1fr );
+	}
+	.sdaweb-gcal-month__weeknum {
+		font-size: 0.6875rem;
+	}
+}
+
+/*
+ * Mobile auto-degrade Month → Mini.
+ *
+ * Month_Renderer wraps both children in .sdaweb-gcal-month-with-fallback
+ * when mobile_degrade=auto. Default state (≥600px) shows the full grid and
+ * hides the mini sibling; below 600px the swap is reversed. The mini's own
+ * chrome (view-toggle + ICS) is suppressed on mobile to avoid duplicating
+ * the controls already rendered above the month wrapper.
+ */
+.sdaweb-gcal-month-with-fallback > .sdaweb-gcal--mini {
+	display: none;
+	max-width: none;
+}
+
+/*
+ * Auto-degrade trigger:
+ *   - max-width 600px catches portrait phones AND narrow desktop windows
+ *   - orientation:landscape + max-height:500px catches phones turned sideways
+ *     (iPhone 13/14/15 landscape ≈ 390-430px height) without false-positiving
+ *     iPad landscape (~810px height) or desktop (typically much taller).
+ *
+ * Why we degrade in landscape too: Month-grid event chips don't reliably show
+ * a tap-to-open popover on iOS WebKit in landscape (touchend / click ordering
+ * has been flaky across 0.4.19–0.4.21). Mini-month's panel-based interaction
+ * works the same in any orientation, so collapsing to Mini sidesteps the
+ * problem entirely — visitors get a consistent, working calendar regardless
+ * of how they hold the phone.
+ */
+@media ( max-width: 600px ), ( orientation: landscape ) and ( max-height: 500px ) {
+	.sdaweb-gcal-month-with-fallback > .sdaweb-gcal--month {
+		display: none;
+	}
+	.sdaweb-gcal-month-with-fallback > .sdaweb-gcal--mini {
+		display: block;
+	}
+	/*
+	 * Legend strip stays hidden on mobile — its multi-feed swatches need
+	 * horizontal room. The unified titlebar (view-toggle + ICS subscribe +
+	 * search + date-jump) renders so visitors can switch views and search
+	 * from a phone. The container queries in front.css collapse search to
+	 * an icon-trigger and ICS to icon-only at narrow widths automatically,
+	 * so the bar fits without any view-specific suppression here.
+	 */
+	.sdaweb-gcal-month-with-fallback > .sdaweb-gcal--mini .sdaweb-gcal-legend {
+		display: none;
+	}
+}
+
+/*
+ * Day-overflow indicator + popover.
+ *
+ * "+N more" gets two interactive variants depending on the display's
+ * `month_overflow_action` setting:
+ *
+ *   - day mode: a real <a> link to the Day view for that date. No JS.
+ *   - popover mode (default): a <button> trigger that opens a panel
+ *     listing the day's events; powered by month-overflow.js.
+ *
+ * Both share the same visual baseline (small, muted, full-cell-width)
+ * so the cell layout is identical regardless of which mode is active.
+ */
+
+.sdaweb-gcal-month__overflow {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.sdaweb-gcal-month__overflow-link,
+.sdaweb-gcal-month__overflow-trigger {
+	display: block;
+	width: 100%;
+	padding: 2px 4px;
+	margin: 0;
+	background: transparent;
+	border: 0;
+	color: var( --sdaweb-gcal-color-text-muted );
+	font: inherit;
+	font-size: 0.6875rem;
+	line-height: 1.3;
+	text-align: left;
+	text-decoration: none;
+	cursor: pointer;
+	border-radius: 4px;
+	transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.sdaweb-gcal-month__overflow-link:hover,
+.sdaweb-gcal-month__overflow-link:focus-visible,
+.sdaweb-gcal-month__overflow-trigger:hover,
+.sdaweb-gcal-month__overflow-trigger:focus-visible {
+	color: var( --sdaweb-gcal-color-text );
+	background: var( --sdaweb-gcal-color-surface-alt );
+	text-decoration: underline;
+	text-underline-offset: 2px;
+}
+
+.sdaweb-gcal-month__overflow-link:focus-visible,
+.sdaweb-gcal-month__overflow-trigger:focus-visible {
+	outline: 2px solid var( --sdaweb-gcal-color-primary );
+	outline-offset: 1px;
+}
+
+/* Popover container — single instance per .sdaweb-gcal--month wrapper. */
+
+.sdaweb-gcal-month__overflow-popover {
+	position: fixed;
+	z-index: 1000;
+	min-width: 240px;
+	max-width: 320px;
+	max-height: 480px;
+	overflow-y: auto;
+	padding: 12px;
+	background: var( --sdaweb-gcal-color-surface );
+	color: var( --sdaweb-gcal-color-text );
+	border: 1px solid var( --sdaweb-gcal-color-border );
+	border-radius: var( --sdaweb-gcal-radius );
+	box-shadow: 0 8px 32px rgba( 0, 0, 0, 0.12 );
+	font-size: 0.8125rem;
+	line-height: 1.4;
+}
+
+.sdaweb-gcal-month__overflow-popover[hidden] {
+	display: none;
+}
+
+.sdaweb-gcal-month__overflow-popover-header {
+	display: flex;
+	align-items: baseline;
+	gap: 8px;
+	margin: 0 0 8px;
+	padding-bottom: 8px;
+	border-bottom: 1px solid var( --sdaweb-gcal-color-border );
+}
+
+.sdaweb-gcal-month__overflow-popover-title {
+	flex: 1 1 auto;
+	margin: 0;
+	font-size: 0.9375rem;
+	font-weight: var( --sdaweb-gcal-font-weight-bold );
+	color: var( --sdaweb-gcal-color-text );
+	min-width: 0;
+	word-wrap: break-word;
+}
+
+.sdaweb-gcal-month__overflow-popover-close {
+	flex: 0 0 auto;
+	width: 24px;
+	height: 24px;
+	padding: 0;
+	background: transparent;
+	border: 0;
+	color: var( --sdaweb-gcal-color-text-muted );
+	cursor: pointer;
+	border-radius: 4px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.sdaweb-gcal-month__overflow-popover-close:hover,
+.sdaweb-gcal-month__overflow-popover-close:focus-visible {
+	background: var( --sdaweb-gcal-color-surface-alt );
+	color: var( --sdaweb-gcal-color-text );
+}
+
+.sdaweb-gcal-month__overflow-popover-close svg {
+	width: 12px;
+	height: 12px;
+}
+
+.sdaweb-gcal-month__overflow-popover-list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+}
+
+.sdaweb-gcal-month__overflow-popover-item {
+	border-inline-start: 3px solid var( --sdaweb-gcal-event-color, var( --sdaweb-gcal-color-primary ) );
+	padding: 4px 0 4px 8px;
+	border-radius: 4px;
+	transition: background-color 0.15s ease;
+}
+
+.sdaweb-gcal-month__overflow-popover-item:hover,
+.sdaweb-gcal-month__overflow-popover-item:focus-within {
+	background: var( --sdaweb-gcal-color-surface-alt );
+}
+
+.sdaweb-gcal-month__overflow-popover-link {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+	color: inherit;
+	text-decoration: none;
+}
+
+.sdaweb-gcal-month__overflow-popover-link:focus-visible {
+	outline: 2px solid var( --sdaweb-gcal-color-primary );
+	outline-offset: 2px;
+	border-radius: 2px;
+}
+
+.sdaweb-gcal-month__overflow-popover-time {
+	font-size: 0.75rem;
+	font-weight: var( --sdaweb-gcal-font-weight-bold );
+	color: var( --sdaweb-gcal-color-text-muted );
+	font-variant-numeric: tabular-nums;
+}
+
+.sdaweb-gcal-month__overflow-popover-event-title {
+	font-weight: 500;
+	color: var( --sdaweb-gcal-color-text );
+	overflow-wrap: break-word;
+}
+
+.sdaweb-gcal-month__overflow-popover-link:hover .sdaweb-gcal-month__overflow-popover-event-title,
+.sdaweb-gcal-month__overflow-popover-link:focus-visible .sdaweb-gcal-month__overflow-popover-event-title {
+	text-decoration: underline;
+	text-underline-offset: 3px;
+}
+
+.sdaweb-gcal-month__overflow-popover-location {
+	font-size: 0.75rem;
+	color: var( --sdaweb-gcal-color-text-muted );
+}
+
+@media ( prefers-reduced-motion: reduce ) {
+	.sdaweb-gcal-month__overflow-link,
+	.sdaweb-gcal-month__overflow-trigger,
+	.sdaweb-gcal-month__overflow-popover-item,
+	.sdaweb-gcal-month__overflow-popover-close {
+		transition: none !important;
+	}
+}

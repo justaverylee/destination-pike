@@ -1,0 +1,141 @@
+/**
+ * SDAweb Calendar Sync — week view styles.
+ *
+ * Layout: 7 day columns on desktop, vertical stack on mobile.
+ */
+
+.sdaweb-gcal--week {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+.sdaweb-gcal-week__grid {
+	display: grid;
+	grid-template-columns: repeat( 7, minmax( 0, 1fr ) );
+	gap: 8px;
+}
+
+.sdaweb-gcal-week__day {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	background: var( --sdaweb-gcal-color-surface );
+	border: 1px solid var( --sdaweb-gcal-color-border );
+	border-radius: var( --sdaweb-gcal-radius );
+	padding: 8px;
+	min-width: 0;
+}
+
+.sdaweb-gcal-week__day.is-today {
+	border-color: var( --sdaweb-gcal-color-today, var( --sdaweb-gcal-color-primary ) );
+	box-shadow: 0 0 0 1px var( --sdaweb-gcal-color-today, var( --sdaweb-gcal-color-primary ) ) inset;
+}
+
+.sdaweb-gcal-week__day-header {
+	display: flex;
+	align-items: baseline;
+	gap: 6px;
+	padding-bottom: 4px;
+	border-bottom: 1px solid var( --sdaweb-gcal-color-border );
+}
+
+.sdaweb-gcal-week__weekday {
+	font-size: 0.6875rem;
+	font-weight: var( --sdaweb-gcal-font-weight-bold );
+	color: var( --sdaweb-gcal-color-text-muted );
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+}
+
+.sdaweb-gcal-week__date {
+	font-size: 1.125rem;
+	font-weight: var( --sdaweb-gcal-font-weight-bold );
+	color: var( --sdaweb-gcal-color-text );
+}
+
+.sdaweb-gcal-week__day.is-today .sdaweb-gcal-week__date {
+	color: var( --sdaweb-gcal-color-today, var( --sdaweb-gcal-color-primary ) );
+}
+
+.sdaweb-gcal-week__empty {
+	color: var( --sdaweb-gcal-color-text-muted );
+	font-size: 0.75rem;
+	margin: 0;
+	padding: 8px 0;
+	text-align: center;
+}
+
+.sdaweb-gcal-week__events {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	min-width: 0;
+}
+
+.sdaweb-gcal-week__event {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+	padding: 4px 6px;
+	border-inline-start: 3px solid var( --sdaweb-gcal-event-color, var( --sdaweb-gcal-color-accent ) );
+	background: var( --sdaweb-gcal-color-surface-alt );
+	border-radius: 4px;
+	font-size: 0.8125rem;
+	min-width: 0;
+}
+
+.sdaweb-gcal-week__event.is-cancelled {
+	opacity: 0.6;
+	text-decoration: line-through;
+}
+
+.sdaweb-gcal-week__event-time {
+	font-size: 0.6875rem;
+	color: var( --sdaweb-gcal-color-text-muted );
+	font-weight: var( --sdaweb-gcal-font-weight-bold );
+	font-variant-numeric: tabular-nums;
+}
+
+.sdaweb-gcal-week__event.is-allday .sdaweb-gcal-week__event-time {
+	color: var( --sdaweb-gcal-color-primary );
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+}
+
+.sdaweb-gcal-week__event-title {
+	color: var( --sdaweb-gcal-color-text );
+	font-weight: var( --sdaweb-gcal-font-weight-bold );
+	text-decoration: none;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+	line-clamp: 2;
+}
+
+a.sdaweb-gcal-week__event-title:hover,
+a.sdaweb-gcal-week__event-title:focus-visible {
+	color: var( --sdaweb-gcal-color-primary );
+	text-decoration: underline;
+	text-underline-offset: 2px;
+}
+
+@media ( max-width: 900px ) {
+	.sdaweb-gcal-week__grid {
+		grid-template-columns: repeat( 4, minmax( 0, 1fr ) );
+	}
+}
+
+@media ( max-width: 640px ) {
+	.sdaweb-gcal-week__grid {
+		grid-template-columns: 1fr;
+	}
+	.sdaweb-gcal-week__day {
+		padding: 10px;
+	}
+}

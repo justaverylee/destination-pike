@@ -1,0 +1,1172 @@
+/**
+ * SDAweb Calendar Sync — admin styles.
+ * All selectors and custom properties are prefixed `sdaweb-gcal-` to avoid collisions.
+ */
+
+.sdaweb-gcal-wrap {
+	margin: 20px 20px 0 0;
+	max-width: 1280px;
+}
+
+.sdaweb-gcal-wrap__title {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	font-size: 23px;
+	font-weight: 400;
+	margin: 0 0 12px;
+	padding: 0;
+}
+
+.sdaweb-gcal-wrap__version {
+	font-size: 12px;
+	font-weight: 400;
+	color: #646970;
+	background: #f0f0f1;
+	padding: 2px 8px;
+	border-radius: 4px;
+}
+
+.sdaweb-gcal-tabs {
+	border-bottom: 1px solid #c3c4c7;
+	margin: 0 0 24px;
+	padding: 0;
+	display: flex;
+	gap: 4px;
+}
+
+.sdaweb-gcal-tabs__item {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	padding: 10px 16px;
+	margin-bottom: -1px;
+	color: #2c3338;
+	text-decoration: none;
+	border: 1px solid transparent;
+	border-bottom: 0;
+	border-top-left-radius: 6px;
+	border-top-right-radius: 6px;
+	font-weight: 500;
+	line-height: 1.4;
+}
+
+.sdaweb-gcal-tabs__item:hover {
+	color: #1d2327;
+	background: #f6f7f7;
+}
+
+.sdaweb-gcal-tabs__item.is-active {
+	background: #fff;
+	border-color: #c3c4c7;
+	color: #1d2327;
+	box-shadow: inset 0 -3px 0 0 #2271b1;
+}
+
+.sdaweb-gcal-tabs__item:focus-visible {
+	outline: 2px solid #2271b1;
+	outline-offset: 2px;
+}
+
+.sdaweb-gcal-panel {
+	background: #fff;
+	border: 1px solid #c3c4c7;
+	border-radius: 6px;
+	padding: 24px;
+	box-shadow: 0 1px 1px rgba( 0, 0, 0, 0.04 );
+}
+
+.sdaweb-gcal-panel__heading {
+	margin-top: 0;
+	font-size: 18px;
+	font-weight: 600;
+}
+
+.sdaweb-gcal-panel__intro {
+	color: #50575e;
+	margin: 0 0 16px;
+}
+
+.sdaweb-gcal-empty {
+	text-align: center;
+	padding: 48px 24px;
+	border: 1px dashed #c3c4c7;
+	border-radius: 8px;
+	background: #fafafa;
+}
+
+.sdaweb-gcal-empty__title {
+	font-size: 16px;
+	font-weight: 600;
+	margin: 0 0 6px;
+}
+
+.sdaweb-gcal-empty__body {
+	color: #50575e;
+	max-width: 480px;
+	margin: 0 auto 16px;
+}
+
+.sdaweb-gcal-empty__icon {
+	width: 48px;
+	height: 48px;
+	margin: 0 auto 12px;
+	display: block;
+	color: #2271b1;
+}
+
+.sdaweb-gcal-savebar {
+	position: sticky;
+	bottom: 0;
+	margin-top: 24px;
+	padding: 12px 16px;
+	background: rgba( 255, 255, 255, 0.96 );
+	backdrop-filter: blur( 6px );
+	border-top: 1px solid #c3c4c7;
+	display: none;
+	align-items: center;
+	justify-content: flex-end;
+	gap: 12px;
+	z-index: 10;
+}
+
+.sdaweb-gcal-savebar.is-visible {
+	display: flex;
+}
+
+.sdaweb-gcal-savebar__hint {
+	color: #50575e;
+	font-size: 13px;
+	margin-right: auto;
+}
+
+.sdaweb-gcal-savebar__dirty-dot {
+	display: none;
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	background: #d63638;
+	margin-right: 4px;
+	vertical-align: middle;
+}
+
+.sdaweb-gcal-savebar.is-dirty .sdaweb-gcal-savebar__dirty-dot {
+	display: inline-block;
+}
+
+.sdaweb-gcal-sr-only {
+	border: 0;
+	clip: rect( 1px, 1px, 1px, 1px );
+	clip-path: inset( 50% );
+	height: 1px;
+	margin: -1px;
+	overflow: hidden;
+	padding: 0;
+	position: absolute;
+	width: 1px;
+	word-wrap: normal !important;
+}
+
+/* Calendars list. */
+
+.sdaweb-gcal-listheader,
+.sdaweb-gcal-formheader {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 16px;
+	margin: 0 0 16px;
+}
+
+.sdaweb-gcal-listheader .sdaweb-gcal-panel__heading,
+.sdaweb-gcal-formheader .sdaweb-gcal-panel__heading {
+	margin: 0;
+}
+
+.sdaweb-gcal-table {
+	margin-top: 12px;
+}
+
+.sdaweb-gcal-table th,
+.sdaweb-gcal-table td {
+	vertical-align: middle;
+}
+
+.sdaweb-gcal-col-status {
+	width: 36px;
+}
+
+.sdaweb-gcal-col-actions {
+	width: 320px;
+	white-space: nowrap;
+}
+
+.sdaweb-gcal-statusdot {
+	display: inline-block;
+	width: 12px;
+	height: 12px;
+	border-radius: 50%;
+	background: #c3c4c7;
+	border: 1px solid rgba( 0, 0, 0, 0.05 );
+}
+
+.sdaweb-gcal-statusdot.is-ok {
+	background: #46b450;
+}
+
+.sdaweb-gcal-statusdot.is-stale {
+	background: #f0b849;
+}
+
+.sdaweb-gcal-statusdot.is-error {
+	background: #d63638;
+}
+
+.sdaweb-gcal-statusdot.is-pending {
+	background: #c3c4c7;
+}
+
+.sdaweb-gcal-colordot {
+	display: inline-block;
+	width: 10px;
+	height: 10px;
+	border-radius: 50%;
+	margin-right: 6px;
+	vertical-align: middle;
+	border: 1px solid rgba( 0, 0, 0, 0.1 );
+}
+
+.sdaweb-gcal-row-sub {
+	color: #646970;
+	font-size: 12px;
+	margin-top: 2px;
+}
+
+.sdaweb-gcal-col-actions .button {
+	margin-right: 4px;
+}
+
+/* Calendar form. */
+
+.sdaweb-gcal-form {
+	max-width: 720px;
+	margin-top: 8px;
+}
+
+.sdaweb-gcal-fieldset {
+	border: 1px solid #dcdcde;
+	border-radius: 6px;
+	padding: 12px 16px;
+	margin: 0 0 20px;
+}
+
+.sdaweb-gcal-fieldset legend {
+	padding: 0 6px;
+	font-weight: 600;
+}
+
+.sdaweb-gcal-radio-card {
+	display: block;
+	border: 1px solid #dcdcde;
+	border-radius: 6px;
+	padding: 10px 12px;
+	margin: 8px 0;
+	cursor: pointer;
+	transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.sdaweb-gcal-radio-card:hover {
+	border-color: #2271b1;
+}
+
+.sdaweb-gcal-radio-card input[type="radio"] {
+	margin-right: 8px;
+}
+
+.sdaweb-gcal-radio-card input[type="radio"]:checked ~ .sdaweb-gcal-radio-card__title {
+	color: #2271b1;
+}
+
+.sdaweb-gcal-radio-card:has( input[type="radio"]:checked ) {
+	border-color: #2271b1;
+	box-shadow: 0 0 0 1px #2271b1 inset;
+}
+
+.sdaweb-gcal-radio-card__title {
+	font-weight: 600;
+}
+
+.sdaweb-gcal-radio-card__body {
+	display: block;
+	color: #50575e;
+	font-size: 13px;
+	margin-top: 4px;
+	margin-left: 22px;
+}
+
+.sdaweb-gcal-field {
+	margin-bottom: 18px;
+}
+
+.sdaweb-gcal-field label {
+	display: block;
+	font-weight: 600;
+	margin-bottom: 4px;
+}
+
+/*
+ * Selects on the Edit Display screen sit in a column alongside a sticky
+ * Live preview pane. Without an explicit width rule a <select> auto-sizes
+ * to its widest option (e.g. "Pastel — soft tinted background, colored
+ * left border (Month view)") and overflows the column behind the preview,
+ * clipping trailing characters. Cap to the column's available width with
+ * the same 100%/max-width treatment we apply to text inputs and textareas.
+ * The numeric/URL/date input types are added to the same rule for parity
+ * — they were inheriting the WP-core default which doesn't constrain them.
+ */
+.sdaweb-gcal-field input[type="text"],
+.sdaweb-gcal-field input[type="color"],
+.sdaweb-gcal-field input[type="number"],
+.sdaweb-gcal-field input[type="url"],
+.sdaweb-gcal-field input[type="date"],
+.sdaweb-gcal-field textarea,
+.sdaweb-gcal-field select {
+	width: 100%;
+	max-width: 520px;
+	box-sizing: border-box;
+}
+
+.sdaweb-gcal-field textarea {
+	font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+	font-size: 12px;
+}
+
+.sdaweb-gcal-field-row {
+	display: flex;
+	gap: 24px;
+	flex-wrap: wrap;
+}
+
+.sdaweb-gcal-field-row .sdaweb-gcal-field {
+	flex: 1 1 220px;
+	min-width: 220px;
+}
+
+.sdaweb-gcal-field-row input[type="color"] {
+	width: 60px;
+	height: 32px;
+	padding: 0;
+}
+
+.sdaweb-gcal-sa-picker {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	margin: 0 0 8px;
+}
+
+.sdaweb-gcal-sa-picker label.button {
+	cursor: pointer;
+}
+
+.sdaweb-gcal-sa-picker__filename {
+	color: #50575e;
+	font-size: 13px;
+	font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+.sdaweb-gcal-sa-detected {
+	margin: 12px 0 0;
+	padding: 12px 14px;
+	background: #f0f6fc;
+	border: 1px solid #99c2e2;
+	border-radius: 6px;
+	max-width: 520px;
+}
+
+.sdaweb-gcal-sa-detected__title {
+	margin: 0 0 6px;
+	font-weight: 600;
+	color: #1d2327;
+	font-size: 13px;
+}
+
+.sdaweb-gcal-sa-detected__row {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	margin: 0 0 8px;
+	flex-wrap: wrap;
+}
+
+.sdaweb-gcal-sa-detected__email {
+	background: #fff;
+	border: 1px solid #c3c4c7;
+	border-radius: 4px;
+	padding: 4px 8px;
+	font-size: 12px;
+	word-break: break-all;
+	flex: 1 1 240px;
+	min-width: 0;
+}
+
+.sdaweb-gcal-sa-detected__hint {
+	margin: 0;
+	font-size: 12px;
+	color: #50575e;
+	line-height: 1.5;
+}
+
+.sdaweb-gcal-secret-mask {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	padding: 8px 12px;
+	background: #f6f7f7;
+	border: 1px solid #dcdcde;
+	border-radius: 6px;
+	max-width: 520px;
+}
+
+.sdaweb-gcal-secret-mask code {
+	font-size: 14px;
+	letter-spacing: 2px;
+}
+
+.sdaweb-gcal-secret-meta {
+	color: #50575e;
+	font-size: 12px;
+}
+
+.sdaweb-gcal-form-actions {
+	display: flex;
+	align-items: center;
+	gap: 16px;
+	flex-wrap: wrap;
+	margin-top: 24px;
+	padding-top: 16px;
+	border-top: 1px solid #dcdcde;
+}
+
+.sdaweb-gcal-form-actions__primary {
+	margin-left: auto;
+	display: flex;
+	gap: 8px;
+}
+
+.sdaweb-gcal-test-result {
+	flex: 1 1 100%;
+	min-height: 24px;
+	padding: 8px 12px;
+	border-radius: 6px;
+	font-size: 13px;
+	display: none;
+}
+
+.sdaweb-gcal-test-result.is-pending,
+.sdaweb-gcal-test-result.is-success,
+.sdaweb-gcal-test-result.is-error {
+	display: block;
+}
+
+.sdaweb-gcal-test-result.is-pending {
+	background: #f6f7f7;
+	color: #50575e;
+}
+
+.sdaweb-gcal-test-result.is-success {
+	background: #f0f9eb;
+	color: #1f5d20;
+	border: 1px solid #b6d8a4;
+}
+
+.sdaweb-gcal-test-result.is-error {
+	background: #fcf0f1;
+	color: #8a1f23;
+	border: 1px solid #e6a3a6;
+}
+
+.sdaweb-gcal-test-preview {
+	margin: 8px 0 0;
+	padding-left: 18px;
+	font-size: 13px;
+}
+
+.sdaweb-gcal-test-preview li {
+	margin: 2px 0;
+}
+
+.sdaweb-gcal-test-preview span {
+	color: #50575e;
+	font-size: 12px;
+	margin-left: 8px;
+}
+
+.sdaweb-gcal-test-meta {
+	margin: 6px 0 0;
+	font-size: 12px;
+	color: #50575e;
+}
+
+.sdaweb-gcal-test-debug {
+	margin-top: 8px;
+	padding: 6px 0 0;
+	border-top: 1px dashed #e6a3a6;
+	font-size: 12px;
+}
+
+.sdaweb-gcal-test-debug summary {
+	cursor: pointer;
+	font-weight: 600;
+}
+
+.sdaweb-gcal-test-debug pre {
+	margin: 6px 0 0;
+	padding: 8px 10px;
+	background: #fff;
+	border: 1px solid #dcdcde;
+	border-radius: 4px;
+	font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+	font-size: 11px;
+	line-height: 1.4;
+	max-height: 320px;
+	overflow: auto;
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+/* Displays tab. */
+
+.sdaweb-gcal-display-grid {
+	display: grid;
+	grid-template-columns: minmax( 0, 1fr ) minmax( 320px, 480px );
+	gap: 24px;
+	align-items: start;
+}
+
+@media ( max-width: 1100px ) {
+	.sdaweb-gcal-display-grid {
+		grid-template-columns: 1fr;
+	}
+}
+
+.sdaweb-gcal-display-form {
+	max-width: none;
+}
+
+.sdaweb-gcal-display-preview {
+	background: #fff;
+	border: 1px solid #c3c4c7;
+	border-radius: 6px;
+	padding: 16px;
+	position: sticky;
+	top: 32px;
+}
+
+.sdaweb-gcal-display-preview__heading {
+	margin: 0 0 6px;
+	font-size: 14px;
+	font-weight: 600;
+}
+
+.sdaweb-gcal-display-preview__shortcode {
+	margin: 0 0 12px;
+	font-size: 12px;
+	color: #50575e;
+}
+
+.sdaweb-gcal-display-preview__shortcode code {
+	font-size: 12px;
+}
+
+/*
+ * Multi-view preview switcher (v0.4.30+). Visible only when the saved
+ * display has more than one preview-eligible view (primary + toggle views).
+ * Buttons swap the active pane via JS — all panes are server-rendered on
+ * page load, switching is pure visibility, no HTTP cost.
+ */
+.sdaweb-gcal-display-preview__switcher {
+	display: flex;
+	gap: 4px;
+	flex-wrap: wrap;
+	margin: 0 0 12px;
+	padding: 4px;
+	background: #f0f0f1;
+	border-radius: 6px;
+}
+
+.sdaweb-gcal-display-preview__switch {
+	appearance: none;
+	background: transparent;
+	border: 1px solid transparent;
+	border-radius: 4px;
+	padding: 4px 10px;
+	font-size: 13px;
+	cursor: pointer;
+	color: #1d2327;
+	transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.sdaweb-gcal-display-preview__switch:hover {
+	background: rgba( 0, 0, 0, 0.04 );
+}
+
+.sdaweb-gcal-display-preview__switch.is-active {
+	background: #fff;
+	border-color: #c3c4c7;
+	box-shadow: 0 1px 2px rgba( 0, 0, 0, 0.05 );
+	font-weight: 600;
+}
+
+.sdaweb-gcal-display-preview__switch:focus-visible {
+	outline: 2px solid #2271b1;
+	outline-offset: 2px;
+}
+
+.sdaweb-gcal-display-preview__panes {
+	display: contents;
+}
+
+.sdaweb-gcal-display-preview__pane {
+	border: 1px solid #dcdcde;
+	border-radius: 6px;
+	padding: 12px;
+	background: #fafafa;
+	min-height: 120px;
+	overflow: auto;
+	max-height: 600px;
+}
+
+.sdaweb-gcal-field-help {
+	display: flex;
+	gap: 10px;
+	align-items: flex-start;
+	margin-top: 8px;
+	padding: 10px 12px;
+	background: #f0f6fc;
+	border-inline-start: 3px solid #2271b1;
+	border-radius: 4px;
+	font-size: 13px;
+	line-height: 1.55;
+	color: #2c3338;
+	max-width: 520px;
+}
+
+.sdaweb-gcal-field-help__icon {
+	width: 18px;
+	height: 18px;
+	color: #2271b1;
+	flex: 0 0 auto;
+	margin-top: 2px;
+}
+
+.sdaweb-gcal-field-help__body {
+	flex: 1 1 auto;
+	min-width: 0;
+}
+
+.sdaweb-gcal-field-help__body p {
+	margin: 0 0 6px;
+}
+
+.sdaweb-gcal-field-help__body p:last-child {
+	margin-bottom: 0;
+}
+
+.sdaweb-gcal-field-help__body p[data-for] strong {
+	color: #1d2327;
+}
+
+.sdaweb-gcal-field-help__note {
+	color: #50575e;
+	font-size: 12px;
+	font-style: italic;
+	border-top: 1px dashed #c3c4c7;
+	padding-top: 6px;
+	margin-top: 8px !important;
+}
+
+@media ( prefers-reduced-motion: no-preference ) {
+	.sdaweb-gcal-field-help__body p[data-for] {
+		animation: sdawebGcalFadeIn 0.18s ease;
+	}
+}
+
+@keyframes sdawebGcalFadeIn {
+	from { opacity: 0; transform: translateY(-2px); }
+	to { opacity: 1; transform: translateY(0); }
+}
+
+.sdaweb-gcal-toggle-list {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 12px 18px;
+	margin: 8px 0 16px;
+}
+
+.sdaweb-gcal-toggle {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	font-size: 13px;
+}
+
+.sdaweb-gcal-checkbox-row {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	margin-right: 16px;
+	font-size: 13px;
+}
+
+.sdaweb-gcal-shortcode-badge {
+	background: #f6f7f7;
+	border: 1px solid #dcdcde;
+	border-radius: 4px;
+	padding: 2px 6px;
+	font-size: 12px;
+	margin-right: 4px;
+}
+
+.sdaweb-gcal-labels summary {
+	cursor: pointer;
+	font-weight: 600;
+	margin-bottom: 8px;
+}
+
+.sdaweb-gcal-subheading {
+	font-size: 13px;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.04em;
+	color: #50575e;
+	margin: 16px 0 8px;
+}
+
+/*
+ * Dependent fields inside List view options — Day/Week/Heading-position
+ * dropdowns that only matter for certain Group events values. Grey them out
+ * (but keep them submittable) when the current Group events value doesn't
+ * activate them, so admins see the dependency without losing data.
+ */
+.sdaweb-gcal-field--dependent {
+	padding-inline-start: 16px;
+}
+
+.sdaweb-gcal-field--dependent.is-inactive {
+	opacity: 0.55;
+}
+
+.sdaweb-gcal-field--dependent.is-inactive label,
+.sdaweb-gcal-field--dependent.is-inactive .description {
+	color: #646970;
+}
+
+/*
+ * Suppressed-by-grouping toggle: visual hint that the value won't take
+ * effect under the current Group events selection. The checkbox stays
+ * functional so flipping grouping back restores the saved choice.
+ */
+.sdaweb-gcal-toggle.is-suppressed {
+	opacity: 0.55;
+}
+
+.sdaweb-gcal-toggle .sdaweb-gcal-suppress-tag {
+	color: #646970;
+	font-style: italic;
+	font-size: 12px;
+	margin-inline-start: 6px;
+}
+
+/* Italic scope hint shown above the legend of view-conditional fieldsets
+ * (e.g. List view options when the primary view isn't List). Quieter than
+ * the regular .description so it doesn't compete with field labels below. */
+.sdaweb-gcal-fieldset-hint {
+	margin-top: 0;
+	color: #50575e;
+}
+
+/*
+ * Active/inactive status badges inline with dependent-field labels (Tier
+ * 2.5). Surface the existing greying logic's gating condition as readable
+ * text so admins don't have to mentally cross-reference the help line
+ * with the current value of "Group events".
+ */
+.sdaweb-gcal-status-badge {
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	margin-inline-start: 8px;
+	padding: 1px 8px 1px 6px;
+	font-size: 11px;
+	font-weight: 500;
+	letter-spacing: 0.01em;
+	border-radius: 999px;
+	background: #f0f0f1;
+	color: #50575e;
+	white-space: nowrap;
+	vertical-align: 1px;
+}
+
+.sdaweb-gcal-status-badge--active {
+	background: rgba( 0, 134, 90, 0.12 );
+	color: #00603f;
+}
+
+.sdaweb-gcal-status-badge__dot {
+	width: 6px;
+	height: 6px;
+	border-radius: 50%;
+	background: currentColor;
+	display: inline-block;
+}
+
+/*
+ * "Used in:" list — appears above the dropdown for fields with more than
+ * one role (e.g. Week heading style: top-level vs sub-heading inside
+ * month_with_weeks). Each item gets a context marker that flips between
+ * ✓ (currently active) and a quiet em-dash (not currently active).
+ */
+.sdaweb-gcal-used-in {
+	list-style: none;
+	margin: 4px 0 6px;
+	padding: 6px 8px;
+	background: #f6f7f7;
+	border: 1px solid #dcdcde;
+	border-radius: 4px;
+	font-size: 12px;
+	color: #50575e;
+}
+
+.sdaweb-gcal-used-in li {
+	margin: 0;
+	padding: 2px 0 2px 22px;
+	position: relative;
+}
+
+.sdaweb-gcal-used-in li::before {
+	content: "—";
+	position: absolute;
+	inset-inline-start: 4px;
+	color: #a7aaad;
+	font-weight: 600;
+}
+
+.sdaweb-gcal-used-in li.is-active {
+	color: #00603f;
+}
+
+.sdaweb-gcal-used-in li.is-active::before {
+	content: "✓";
+	color: #00603f;
+}
+
+/*
+ * Scope chips on fieldset legends (Tier 2.5). Each fieldset declares
+ * which views it affects via data-sdaweb-gcal-scope; chips render that
+ * scope inline in the legend. View chips (List/Month/etc.) are
+ * clickable filter buttons that dim non-matching fieldsets across the
+ * form. Pseudo-chips ("all views", "structure") are informational only.
+ */
+.sdaweb-gcal-fieldset > legend {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 6px;
+	width: 100%;
+}
+
+.sdaweb-gcal-fieldset-legend-text {
+	font-weight: 600;
+}
+
+.sdaweb-gcal-scope-chips {
+	display: inline-flex;
+	flex-wrap: wrap;
+	gap: 4px;
+	margin-inline-start: auto;
+	font-weight: normal;
+}
+
+.sdaweb-gcal-scope-chip {
+	appearance: none;
+	display: inline-flex;
+	align-items: center;
+	padding: 1px 9px;
+	font-size: 11px;
+	font-weight: 500;
+	letter-spacing: 0.01em;
+	border-radius: 999px;
+	background: #f0f0f1;
+	color: #50575e;
+	border: 1px solid transparent;
+	cursor: default;
+	white-space: nowrap;
+}
+
+.sdaweb-gcal-scope-chip--filter {
+	cursor: pointer;
+	transition: background-color 0.12s, border-color 0.12s, color 0.12s;
+}
+
+.sdaweb-gcal-scope-chip--filter:hover {
+	background: #e0e0e1;
+}
+
+.sdaweb-gcal-scope-chip--filter:focus-visible {
+	outline: 2px solid #2271b1;
+	outline-offset: 2px;
+}
+
+.sdaweb-gcal-scope-chip--filter.is-active {
+	/* Active is encoded with background + bold weight + aria-pressed, never
+	 * colour alone. Fixed #2271b1/#fff (~4.6:1) is used instead of the admin
+	 * theme variable so contrast stays AA in every admin colour scheme. */
+	background: #2271b1;
+	color: #fff;
+	border-color: #2271b1;
+	font-weight: 600;
+}
+
+.sdaweb-gcal-scope-chip--info {
+	font-style: italic;
+}
+
+/*
+ * View filter bar — single clickable control above the Displays form.
+ * Replaces the former per-section chips + opacity dimming (which conveyed
+ * nothing to screen readers); the controller now truly hides non-matching
+ * fieldsets via the `hidden` attribute.
+ */
+.sdaweb-gcal-scope-filter {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 0.5rem;
+	margin: 0 0 1rem;
+	padding: 0.75rem 1rem;
+	background: #fff;
+	border: 1px solid #dcdcde;
+	border-radius: 6px;
+}
+
+.sdaweb-gcal-scope-filter__label {
+	font-weight: 600;
+}
+
+.sdaweb-gcal-scope-filter__chips {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.375rem;
+}
+
+.sdaweb-gcal-scope-filter__count {
+	margin-left: 0.35em;
+	opacity: 0.75;
+	font-variant-numeric: tabular-nums;
+}
+
+.sdaweb-gcal-scope-filter__count:empty {
+	display: none;
+}
+
+.sdaweb-gcal-scope-filter__status {
+	flex-basis: 100%;
+	margin: 0.25rem 0 0;
+	color: #646970;
+	font-style: italic;
+}
+
+.sdaweb-gcal-fieldset[hidden] {
+	display: none;
+}
+
+/*
+ * FOUC guard (pre-paint). The inline head-of-form script mirrors the saved
+ * filter to <html data-sdaweb-gcal-scope-initial="…"> before the fieldsets
+ * paint, so the non-matching sections never flash visible on a filtered
+ * reload. This only ever applies when JS set the attribute, so no-JS users
+ * still see every section. Once initScopeFilterBar() runs it removes the
+ * attribute and drives visibility via the `hidden` attribute instead. Whole-
+ * token matching mirrors isVisible() in admin.js (structure/all always show).
+ */
+html[data-sdaweb-gcal-scope-initial="upcoming"] .sdaweb-gcal-fieldset[data-sdaweb-gcal-scope]:not([data-sdaweb-gcal-scope~="upcoming"]):not([data-sdaweb-gcal-scope~="all"]):not([data-sdaweb-gcal-scope~="structure"]),
+html[data-sdaweb-gcal-scope-initial="list"] .sdaweb-gcal-fieldset[data-sdaweb-gcal-scope]:not([data-sdaweb-gcal-scope~="list"]):not([data-sdaweb-gcal-scope~="all"]):not([data-sdaweb-gcal-scope~="structure"]),
+html[data-sdaweb-gcal-scope-initial="card"] .sdaweb-gcal-fieldset[data-sdaweb-gcal-scope]:not([data-sdaweb-gcal-scope~="card"]):not([data-sdaweb-gcal-scope~="all"]):not([data-sdaweb-gcal-scope~="structure"]),
+html[data-sdaweb-gcal-scope-initial="month"] .sdaweb-gcal-fieldset[data-sdaweb-gcal-scope]:not([data-sdaweb-gcal-scope~="month"]):not([data-sdaweb-gcal-scope~="all"]):not([data-sdaweb-gcal-scope~="structure"]),
+html[data-sdaweb-gcal-scope-initial="mini"] .sdaweb-gcal-fieldset[data-sdaweb-gcal-scope]:not([data-sdaweb-gcal-scope~="mini"]):not([data-sdaweb-gcal-scope~="all"]):not([data-sdaweb-gcal-scope~="structure"]) {
+	display: none;
+}
+
+/* Help tab. */
+
+.sdaweb-gcal-help {
+	background: #fff;
+	border: 1px solid #dcdcde;
+	border-radius: 6px;
+	margin: 12px 0;
+	padding: 0;
+	max-width: 880px;
+}
+
+.sdaweb-gcal-help summary {
+	cursor: pointer;
+	padding: 12px 16px;
+	font-size: 14px;
+}
+
+.sdaweb-gcal-help summary:focus-visible {
+	outline: 2px solid #2271b1;
+	outline-offset: -2px;
+}
+
+.sdaweb-gcal-help[open] summary {
+	border-bottom: 1px solid #dcdcde;
+}
+
+.sdaweb-gcal-help__body {
+	padding: 16px;
+	color: #2c3338;
+	line-height: 1.55;
+}
+
+.sdaweb-gcal-help__body ol,
+.sdaweb-gcal-help__body ul {
+	padding-inline-start: 22px;
+	margin: 0 0 12px;
+}
+
+.sdaweb-gcal-help__body li {
+	margin: 4px 0;
+}
+
+.sdaweb-gcal-help__body code {
+	background: #f6f7f7;
+	padding: 2px 6px;
+	border-radius: 4px;
+	font-size: 12px;
+}
+
+.sdaweb-gcal-help__body dl {
+	margin: 0;
+}
+
+.sdaweb-gcal-help__body dt {
+	font-weight: 600;
+	margin-top: 8px;
+}
+
+.sdaweb-gcal-help__body dd {
+	margin: 4px 0 8px 0;
+	color: #50575e;
+}
+
+.sdaweb-gcal-help__body h4 {
+	font-size: 13px;
+	font-weight: 600;
+	margin: 16px 0 6px;
+	color: #1d2327;
+	padding-bottom: 4px;
+	border-bottom: 1px solid #f0f0f1;
+}
+
+.sdaweb-gcal-help__body pre {
+	background: #1d2327;
+	color: #f0f6fc;
+	padding: 12px 14px;
+	border-radius: 4px;
+	font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+	font-size: 12px;
+	line-height: 1.5;
+	overflow-x: auto;
+	margin: 6px 0 12px;
+}
+
+.sdaweb-gcal-help__body pre code {
+	background: transparent;
+	padding: 0;
+	font-size: inherit;
+	color: inherit;
+}
+
+.sdaweb-gcal-contrast-badge {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px;
+	margin-top: 6px;
+	font-size: 11px;
+	line-height: 1.4;
+}
+
+.sdaweb-gcal-contrast-badge__pill {
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	padding: 2px 8px;
+	border-radius: 10px;
+	border: 1px solid transparent;
+	font-variant-numeric: tabular-nums;
+}
+
+.sdaweb-gcal-contrast-badge__pill[data-pass="true"] {
+	background: #edfaef;
+	border-color: #b6e5bf;
+	color: #14532d;
+}
+
+.sdaweb-gcal-contrast-badge__pill[data-pass="false"] {
+	background: #fdecea;
+	border-color: #f5c0bb;
+	color: #8a1f11;
+}
+
+/* Neutral pill — per-calendar Text color left blank (0.9.0). Signals
+ * "field is intentionally unset, the display setting decides" rather than
+ * a failing contrast value. */
+.sdaweb-gcal-contrast-badge__pill[data-pass="neutral"] {
+	background: #f6f7f7;
+	border-color: #dcdcde;
+	color: #50575e;
+}
+
+.sdaweb-gcal-color-reset {
+	display: inline-block;
+	margin-top: 4px;
+	font-size: 11px;
+	color: #2271b1;
+	text-decoration: underline;
+	cursor: pointer;
+	background: none;
+	border: 0;
+	padding: 0;
+}
+
+.sdaweb-gcal-color-reset:hover {
+	color: #135e96;
+}
+
+.sdaweb-gcal-color-reset:disabled {
+	color: #a7aaad;
+	cursor: not-allowed;
+	text-decoration: none;
+}
+
+/* Theme-presets fieldset — a quiet promotion of the option without
+ * shouting. Authors who don't want to fiddle with hex picks get a
+ * one-click start. */
+.sdaweb-gcal-fieldset--presets {
+	background: #f6f7f7;
+	border: 1px solid #c3c4c7;
+	border-radius: 4px;
+}
+
+.sdaweb-gcal-fieldset--presets [data-sdaweb-gcal-preset-apply] {
+	margin-left: 8px;
+}
+
+.sdaweb-gcal-subfield {
+	display: block;
+	margin-top: 8px;
+	font-size: 12px;
+	color: #50575e;
+}
