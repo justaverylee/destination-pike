@@ -219,8 +219,8 @@ async function renderWordCloud() {
   WordCloud(canvas, {
     list: data,
     gridSize: 10,
-    weightFactor: function (size) {      
-      return Math.sqrt(size) * 24 * canvas.width / 800; 
+    weightFactor: function (freq) {      
+      return Math.pow(freq, 2) * 30 * canvas.width / 800; 
     },
     fontFamily: 'Segoe UI, Arial, sans-serif',
     color: 'random-dark', // Automatically color words in random dark tones
