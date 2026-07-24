@@ -84,6 +84,15 @@ let allFrontendEntryPoints = [
 	},
 
 	{
+		els: [
+			'*:has(> .ct-tooltip):not([class*="ct-price-filter-range-handle"])',
+			'.ct-price-filter-slider input[type="range"]'
+		],
+		load: () => import('./frontend/tooltip'),
+		trigger: ['hover']
+	},
+
+	{
 		els: () => {
 			const popperEls = [
 				'.ct-language-switcher > .ct-active-language',

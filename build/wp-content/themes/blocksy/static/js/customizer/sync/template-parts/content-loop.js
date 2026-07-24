@@ -13,7 +13,7 @@ import { handleBackgroundOptionFor } from '../variables/background'
 import { renderSingleEntryMeta } from '../helpers/entry-meta'
 import { replaceFirstTextNode, applyPrefixFor } from '../helpers'
 
-import { maybePromoteScalarValueIntoResponsive } from 'customizer-sync-helpers/dist/promote-into-responsive'
+import { maybePromoteScalarValueIntoResponsive } from '@creative-themes/customizer-sync-helpers/dist/promote-into-responsive'
 
 const prefix = getPrefixFor()
 

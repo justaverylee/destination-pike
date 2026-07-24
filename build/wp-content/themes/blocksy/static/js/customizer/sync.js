@@ -117,7 +117,7 @@ export {
 	getColumnSelectorFor,
 } from './sync/helpers'
 export { typographyOption } from './sync/variables/typography'
-export { maybePromoteScalarValueIntoResponsive } from 'customizer-sync-helpers/dist/promote-into-responsive'
+export { maybePromoteScalarValueIntoResponsive } from '@creative-themes/customizer-sync-helpers/dist/promote-into-responsive'
 
 export const triggerCustomizerAutosave = (callback = () => {}) => {
 	wp.customize.preview.send('ct-trigger-autosave')

@@ -81,7 +81,7 @@ export { default as ToolsWithOptionsPanel } from './editor/components/ToolsWithO
 // gutenberg blocks
 export { default as ColorsPanel } from './editor/components/ColorsPanel'
 
-export * as syncHelpers from 'customizer-sync-helpers'
+export * as syncHelpers from '@creative-themes/customizer-sync-helpers'
 
 export {
 	getAttributesFromOptions,

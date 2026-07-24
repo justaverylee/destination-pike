@@ -390,7 +390,7 @@ export const getWooArchiveVariablesFor = () => ({
 
 	cardProductBackground: {
 		selector: '[data-products="type-2"]',
-		variable: 'backgroundColor',
+		variable: 'card-background-color',
 		type: 'color',
 		responsive: true,
 	},

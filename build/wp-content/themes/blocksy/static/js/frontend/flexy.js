@@ -61,6 +61,29 @@ export const mount = (sliderEl, args) => {
 		if (maybeClickTarget) {
 			setTimeout(() => {
 				maybeClickTarget.click()
+
+				// The tap that mounted the slider is handled now. If the
+				// mount was fast enough, the browser's own click for that
+				// same tap is still on its way (it only gets lost when the
+				// mount loses the race) — let it through and the pill is
+				// handled twice, mid-animation, which snaps the slider
+				// back. Consume at most one trusted click, briefly.
+				const swallowController = new AbortController()
+
+				maybeClickTarget.addEventListener(
+					'click',
+					(event) => {
+						if (!event.isTrusted) {
+							return
+						}
+
+						event.preventDefault()
+						swallowController.abort()
+					},
+					{ signal: swallowController.signal }
+				)
+
+				setTimeout(() => swallowController.abort(), 500)
 			})
 		}
 	}
@@ -158,7 +181,9 @@ export const mount = (sliderEl, args) => {
 			rightArrow:
 				maybePillsSlider.parentNode.querySelector('.flexy-arrow-next'),
 
-			...(maybePillsSlider.closest('.thumbs-left') &&
+			...(maybePillsSlider
+				.closest('.woocommerce-product-gallery')
+				?.dataset.thumbs === 'left' &&
 			getCurrentScreen({ withTablet: true }) !== 'mobile'
 				? {
 						orientation: 'vertical',

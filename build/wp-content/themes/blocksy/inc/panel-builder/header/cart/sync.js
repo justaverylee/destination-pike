@@ -422,7 +422,7 @@ ctEvents.on(
 						to_add: '.ct-cart-content',
 					})
 				),
-				variable: 'dropdownTopOffset',
+				variable: 'dropdown-top-offset',
 				unit: 'px',
 			},
 

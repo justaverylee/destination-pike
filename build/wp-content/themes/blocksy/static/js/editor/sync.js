@@ -1,6 +1,6 @@
 import ctEvents from 'ct-events'
 import { select, useSelect } from '@wordpress/data'
-import { updateVariableInStyleTags } from 'customizer-sync-helpers'
+import { updateVariableInStyleTags } from '@creative-themes/customizer-sync-helpers'
 import { getValueFromInput } from 'blocksy-options'
 import { gutenbergVariables } from './variables'
 

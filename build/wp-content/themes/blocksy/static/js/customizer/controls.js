@@ -181,7 +181,7 @@ export {
 
 export { getColorsDefaults } from '../editor/utils/colors'
 
-export * as syncHelpers from 'customizer-sync-helpers'
+export * as syncHelpers from '@creative-themes/customizer-sync-helpers'
 
 /**
  * Expose builder values

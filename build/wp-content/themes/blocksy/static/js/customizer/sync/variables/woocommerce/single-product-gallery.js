@@ -14,11 +14,17 @@ export const getWooSingleGalleryVariablesFor = () => ({
 	},
 
 	// thumbnails
+	product_thumbs_width: {
+		selector: '.woocommerce-product-gallery[data-thumbs="left"]',
+		variable: 'thumbs-width',
+		unit: 'px',
+	},
+
 	product_thumbs_spacing: {
 		selector: '.product-entry-wrapper',
 		variable: 'thumbs-spacing',
 		responsive: true,
-		unit: '',
+		unit: 'px',
 	},
 
 	product_thumbs_border_radius: {

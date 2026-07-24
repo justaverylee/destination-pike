@@ -98,11 +98,8 @@ wp.customize('product_gallery_ratio', (val) =>
 				const flexyItems = article.querySelector('.flexy-items')
 
 				if (flexyItems) {
-					if (to !== 'original' && flexyItems) {
+					if (to !== 'original') {
 						flexyItems.removeAttribute('style')
-						flexyItems.removeAttribute('data-height')
-					} else {
-						flexyItems.dataset.height = 'dynamic'
 					}
 				}
 			})

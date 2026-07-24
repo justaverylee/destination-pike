@@ -14,14 +14,14 @@ import {
 	getSingleElementsVariables,
 } from './variables/single/related-posts'
 
-import { updateVariableInStyleTags } from 'customizer-sync-helpers'
+import { updateVariableInStyleTags } from '@creative-themes/customizer-sync-helpers'
 import { makeVariablesWithCondition } from './helpers/variables-with-conditions'
 
 import { isFunction } from './builder'
 
 import ctEvents from 'ct-events'
 
-import { maybePromoteScalarValueIntoResponsive } from 'customizer-sync-helpers/dist/promote-into-responsive'
+import { maybePromoteScalarValueIntoResponsive } from '@creative-themes/customizer-sync-helpers/dist/promote-into-responsive'
 
 let variablesCache = null
 

@@ -1,6 +1,6 @@
 import { createElement, Component, Fragment } from '@wordpress/element'
 import classnames from 'classnames'
-export { maybePromoteScalarValueIntoResponsive } from 'customizer-sync-helpers/dist/promote-into-responsive'
+export { maybePromoteScalarValueIntoResponsive } from '@creative-themes/customizer-sync-helpers/dist/promote-into-responsive'
 import { getOptionFor } from '../../options/GenericOptionType'
 
 /**

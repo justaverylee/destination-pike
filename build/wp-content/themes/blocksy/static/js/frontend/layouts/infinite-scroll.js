@@ -1,5 +1,6 @@
 import InfiniteScroll from 'infinite-scroll'
 import { watchLayoutContainerForReveal } from '../animated-element'
+import { setLoaderState } from '../helpers/set-loader-state'
 import ctEvents from 'ct-events'
 
 const generateQuerySelector = (el) => {
@@ -9,7 +10,7 @@ const generateQuerySelector = (el) => {
 		'active',
 		'ct-active',
 		'wpgb-enabled',
-		'e-lazyloaded',
+		'e-lazyloaded'
 	]
 
 	let parents = []
@@ -57,7 +58,7 @@ const generateQuerySelector = (el) => {
 
 			if (elForSelector === el) {
 				const layoutIndex = [
-					...elForSelector.parentNode.children,
+					...elForSelector.parentNode.children
 				].indexOf(elForSelector)
 
 				if (layoutIndex > -1) {
@@ -120,7 +121,7 @@ export const mount = (paginationContainer, { event } = {}) => {
 
 	const paginationSelector =
 		getAppendSelectorFor(layoutEl, {
-			toAppend: '.ct-pagination',
+			toAppend: '.ct-pagination'
 		}) || '.ct-pagination'
 
 	const nextEl = paginationContainer.querySelector('.next')
@@ -158,9 +159,12 @@ export const mount = (paginationContainer, { event } = {}) => {
 
 		onInit() {
 			this.on('load', (response) => {
-				paginationContainer
-					.querySelector('.ct-load-more-helper')
-					.classList.remove('ct-loading')
+				const helper = paginationContainer.querySelector(
+					'.ct-load-more-helper'
+				)
+
+				helper.classList.remove('ct-loading')
+				setLoaderState(helper, { enabled: false })
 
 				setTimeout(() => {
 					ctEvents.trigger('ct:infinite-scroll:load')
@@ -188,9 +192,12 @@ export const mount = (paginationContainer, { event } = {}) => {
 			})
 
 			this.on('request', () => {
-				paginationContainer
-					.querySelector('.ct-load-more-helper')
-					.classList.add('ct-loading')
+				const helper = paginationContainer.querySelector(
+					'.ct-load-more-helper'
+				)
+
+				helper.classList.add('ct-loading')
+				setLoaderState(helper, { enabled: true })
 			})
 
 			this.on('last', () => {
@@ -200,13 +207,14 @@ export const mount = (paginationContainer, { event } = {}) => {
 						: 'ct-last-page'
 				)
 			})
-		},
+		}
 	})
 
 	paginationContainer.infiniteScroll = inf
 
 	if (paginationType === 'load_more' && event) {
-		const loadMoreButton = paginationContainer.querySelector('.ct-load-more')
+		const loadMoreButton =
+			paginationContainer.querySelector('.ct-load-more')
 
 		if (loadMoreButton) {
 			setTimeout(() => loadMoreButton.click())
@@ -217,7 +225,7 @@ export const mount = (paginationContainer, { event } = {}) => {
 function getAppendSelectorFor(layoutEl, args = {}) {
 	args = {
 		toAppend: 'default',
-		...args,
+		...args
 	}
 
 	if (layoutEl.closest('.ct-posts-shortcode')) {

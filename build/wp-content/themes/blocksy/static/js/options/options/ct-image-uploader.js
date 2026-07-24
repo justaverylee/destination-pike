@@ -267,42 +267,54 @@ export default class ImageUploader extends Component {
 	 * @param {object} attachment
 	 */
 	setImageFromAttachment(attachment) {
-		this.onChange(
-			attachment.id,
-			JSON.parse(
-				JSON.stringify(wp.media.attachment(attachment.id).toJSON())
-			)
-		)
+		wp.media.attachment(attachment.id).set(attachment)
+
+		this.onChange(attachment.id, attachment)
 
 		this.updateAttachmentInfo()
 	}
 
-	updateAttachmentInfo = (force = false) => {
+	updateAttachmentInfo = () => {
 		let id = this.getAttachmentId()
 
 		if (!id) return
 
-		if (!wp.media.attachment(id).get('url') || force) {
+		this.detachListener()
+
+		// An unhydrated model is a bare `{id}` stub with no `url`, so fetch it
+		// once from the server. A hydrated model already carries its data.
+		if (wp.media.attachment(id).get('url')) {
+			this.syncInfoFromModel()
+		} else {
 			wp.media
 				.attachment(id)
 				.fetch()
-				.then(() =>
-					this.setState({
-						attachment_info: JSON.parse(
-							JSON.stringify(wp.media.attachment(id).toJSON())
-						)
-					})
-				)
-		} else {
-			this.setState({
-				attachment_info: JSON.parse(
-					JSON.stringify(wp.media.attachment(id).toJSON())
-				)
-			})
+				.then(() => {
+					if (this.getAttachmentId() === id) {
+						this.syncInfoFromModel()
+					}
+				})
 		}
 
-		this.detachListener()
-		wp.media.attachment(id).on('change', this.updateAttachmentInfo)
+		wp.media.attachment(id).on('change', this.syncInfoFromModel)
+	}
+
+	// The `change` handler only re-reads the model into state — never fetches.
+	// A `change` means the attributes already updated in memory, so a fetch is
+	// redundant; worse, fetching here re-enters over admin-ajax on every change,
+	// and for attachments whose response markup is non-deterministic (e.g. ACF's
+	// `compat` field) that becomes an infinite loop (issue #5385).
+	syncInfoFromModel = () => {
+		let id = this.getAttachmentId()
+
+		if (!id) return
+
+		// Snapshot only the fields `getUrlFor` reads. `toJSON()` also carries
+		// bulky, unused data (ACF's `compat` markup, nonces, editLink…) that we
+		// have no reason to hold in state.
+		let { url, width, sizes } = wp.media.attachment(id).toJSON()
+
+		this.setState({ attachment_info: { url, width, sizes } })
 	}
 
 	detachListener() {
@@ -310,14 +322,14 @@ export default class ImageUploader extends Component {
 
 		wp.media
 			.attachment(this.getAttachmentId())
-			.off('change', this.updateAttachmentInfo)
+			.off('change', this.syncInfoFromModel)
 	}
 
 	componentDidUpdate(prevProps) {
 		if (this.getAttachmentId() !== this.getAttachmentId(prevProps)) {
 			wp.media
 				.attachment(this.getAttachmentId(prevProps))
-				.off('change', this.updateAttachmentInfo)
+				.off('change', this.syncInfoFromModel)
 
 			this.updateAttachmentInfo()
 		}

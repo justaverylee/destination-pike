@@ -43,7 +43,7 @@ const getMetaSpacingVariables = ({ prefix }) =>
 			selector: `[data-prefix="${prefix}"] .hero-section .entry-meta[data-id="second"]`,
 		},
 	].map(({ key, selector, second_meta }) => ({
-		variable: 'itemSpacing',
+		variable: 'item-spacing',
 		unit: 'px',
 		responsive: true,
 		selector,

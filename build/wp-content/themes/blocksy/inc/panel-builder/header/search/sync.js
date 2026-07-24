@@ -406,16 +406,24 @@ ctEvents.on(
 				),
 			}),
 
+			search_form_border_radius: {
+				selector: assembleSelector(
+					`${getRootSelectorFor({ itemId })[0]} #search-modal .ct-search-form`
+				),
+				variable: 'theme-form-border-radius',
+				responsive: true,
+				unit: 'px',
+			},
+
 			search_thumb_radius: {
 				selector: assembleSelector(
 					`${
 						getRootSelectorFor({ itemId })[0]
 					} #search-modal .ct-search-results`
 				),
-				type: 'spacing',
 				variable: 'search-image-radius',
 				responsive: true,
-				emptyValue: 2,
+				unit: 'px',
 			},
 
 			headerSearchMargin: {

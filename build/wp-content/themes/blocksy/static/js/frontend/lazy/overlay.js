@@ -380,7 +380,13 @@ export const handleClick = (e, settings) => {
 					e.target.closest('[class*="select2-container"]') ||
 					!e.target.closest('body') ||
 					// If the click is inside the micro popup, we should not close the panel.
-					e.target.closest('.ct-popup')
+					e.target.closest('.ct-popup') ||
+					// WooCommerce checkout triggers programmatic .click() on
+					// payment method radio buttons after update_checkout AJAX
+					// refreshes the order review. These synthetic clicks bubble
+					// to window and would incorrectly close the offcanvas.
+					(!e.isTrusted &&
+						e.target.closest('form.woocommerce-checkout'))
 				) {
 					return
 				}

@@ -2,7 +2,7 @@ import ctEvents from 'ct-events'
 import {
 	updateVariableInStyleTags,
 	clearAstCache,
-} from 'customizer-sync-helpers'
+} from '@creative-themes/customizer-sync-helpers'
 import { getValueFromInput } from '../../options/helpers/get-value-from-input'
 import $ from 'jquery'
 import { __ } from 'ct-i18n'

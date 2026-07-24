@@ -69,7 +69,12 @@ export const wooEntryPoints = [
 	},
 
 	{
-		els: () => [...document.querySelectorAll('.ct-ajax-add-to-cart .cart')],
+		els: () =>
+			[
+				...document.querySelectorAll('[data-add-to-cart="ajax"]'),
+			]
+				.map((el) => el.closest('form'))
+				.filter(Boolean),
 		load: () => import('./add-to-cart-single'),
 		trigger: [
 			{
@@ -80,7 +85,7 @@ export const wooEntryPoints = [
 	},
 
 	{
-		els: '.ct-header-cart > .ct-cart-item, .ajax_add_to_cart, .ct-ajax-add-to-cart',
+		els: '.ct-header-cart > .ct-cart-item, .ajax_add_to_cart, [data-add-to-cart="ajax"]',
 		load: () => import('./mini-cart'),
 		events: ['ct:header:update'],
 		trigger: ['hover-with-touch']

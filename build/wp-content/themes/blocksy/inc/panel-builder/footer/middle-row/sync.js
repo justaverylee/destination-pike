@@ -8,6 +8,7 @@ import {
 	responsiveClassesFor,
 	withKeys,
 } from '../../../../static/js/customizer/sync/helpers'
+import { getColumnsLayout } from './columns-layout'
 
 export const handleRowVariables = ({ itemId }) => ({
 	rowTopBottomSpacing: {
@@ -359,61 +360,7 @@ export const handleRowVariables = ({ itemId }) => ({
 					}
 				}
 
-				if (parseInt(values.items_per_row, 10) === 2) {
-					return (
-						values['2_columns_layout'] || {
-							desktop: 'repeat(2, 1fr)',
-							tablet: 'initial',
-							mobile: 'initial',
-						}
-					)
-				}
-
-				if (parseInt(values.items_per_row, 10) === 3) {
-					return (
-						values['3_columns_layout'] || {
-							desktop: 'repeat(3, 1fr)',
-							tablet: 'initial',
-							mobile: 'initial',
-						}
-					)
-				}
-
-				if (parseInt(values.items_per_row, 10) === 4) {
-					return (
-						values['4_columns_layout'] || {
-							desktop: 'repeat(4, 1fr)',
-							tablet: 'initial',
-							mobile: 'initial',
-						}
-					)
-				}
-
-				if (parseInt(values.items_per_row, 10) === 5) {
-					return (
-						values['5_columns_layout'] || {
-							desktop: 'repeat(5, 1fr)',
-							tablet: 'initial',
-							mobile: 'initial',
-						}
-					)
-				}
-
-				if (parseInt(values.items_per_row, 10) === 6) {
-					return (
-						values['6_columns_layout'] || {
-							desktop: 'repeat(6, 1fr)',
-							tablet: 'initial',
-							mobile: 'initial',
-						}
-					)
-				}
-
-				return {
-					desktop: 'initial',
-					tablet: 'initial',
-					mobile: 'initial',
-				}
+				return getColumnsLayout(values)
 			},
 		}
 	),
@@ -450,79 +397,11 @@ export const handleRowOptions = ({
 
 	el.firstElementChild.removeAttribute('data-columns-divider')
 
+	const count = parseInt(values.items_per_row, 10)
 	const stack = []
+	const columns = getColumnsLayout(values)
 
-	if (parseInt(values.items_per_row, 10) === 2) {
-		const columns = values['2_columns_layout'] || {
-			desktop: 'repeat(2, 1fr)',
-			tablet: 'initial',
-			mobile: 'initial',
-		}
-
-		if (columns['tablet'] === 'initial') {
-			stack.push('tablet')
-		}
-
-		if (columns['mobile'] === 'initial') {
-			stack.push('mobile')
-		}
-	}
-
-	if (parseInt(values.items_per_row, 10) === 3) {
-		const columns = values['3_columns_layout'] || {
-			desktop: 'repeat(3, 1fr)',
-			tablet: 'initial',
-			mobile: 'initial',
-		}
-
-		if (columns['tablet'] === 'initial') {
-			stack.push('tablet')
-		}
-
-		if (columns['mobile'] === 'initial') {
-			stack.push('mobile')
-		}
-	}
-
-	if (parseInt(values.items_per_row, 10) === 4) {
-		const columns = values['4_columns_layout'] || {
-			desktop: 'repeat(4, 1fr)',
-			tablet: 'initial',
-			mobile: 'initial',
-		}
-
-		if (columns['tablet'] === 'initial') {
-			stack.push('tablet')
-		}
-
-		if (columns['mobile'] === 'initial') {
-			stack.push('mobile')
-		}
-	}
-
-	if (parseInt(values.items_per_row, 10) === 5) {
-		const columns = values['5_columns_layout'] || {
-			desktop: 'repeat(5, 1fr)',
-			tablet: 'initial',
-			mobile: 'initial',
-		}
-
-		if (columns['tablet'] === 'initial') {
-			stack.push('tablet')
-		}
-
-		if (columns['mobile'] === 'initial') {
-			stack.push('mobile')
-		}
-	}
-
-	if (parseInt(values.items_per_row, 10) === 6) {
-		const columns = values['6_columns_layout'] || {
-			desktop: 'repeat(6, 1fr)',
-			tablet: 'initial',
-			mobile: 'initial',
-		}
-
+	if (count >= 2 && count <= 6) {
 		if (columns['tablet'] === 'initial') {
 			stack.push('tablet')
 		}
@@ -534,7 +413,7 @@ export const handleRowOptions = ({
 
 	let dataGrid = []
 
-	if (parseInt(values.items_per_row, 10) > 1) {
+	if (count > 1) {
 		if (stack.indexOf('tablet') === -1) {
 			dataGrid.push('md')
 		}
