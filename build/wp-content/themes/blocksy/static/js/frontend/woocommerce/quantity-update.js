@@ -33,11 +33,15 @@ export const mount = (el) => {
 		data: {
 			action: 'blocksy_update_qty_cart',
 			hash: item_hash,
-			quantity: currentVal,
+			quantity: currentVal
 		},
 		success: (data) => {
 			jQuery('body').trigger('updated_wc_div')
+
+			$(document.body).trigger('update_checkout')
+			$(document).trigger('wc_update_cart')
+
 			ctEvents.trigger('ct:header:update')
-		},
+		}
 	})
 }

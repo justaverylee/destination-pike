@@ -43,7 +43,7 @@ const replaceFirstImage = ({ container, image }) => {
 		'.woocommerce-product-gallery .ct-product-gallery-container > .ct-media-container',
 		'.woocommerce-product-gallery .ct-stacked-gallery-container > .ct-media-container:first-child',
 		'.woocommerce-product-gallery .flexy-items > *:first-child > *',
-		'.woocommerce-product-gallery .flexy-pills > ol > *:first-child > *',
+		'.woocommerce-product-gallery .flexy-pills > ol > *:first-child > *'
 	]
 
 	selectorsToTry.map((selector) => {
@@ -135,15 +135,15 @@ const replaceFirstImage = ({ container, image }) => {
 							rect.height >
 								parseFloat(imgContainer.dataset.height)
 								? {
-										magnify: 2,
-								  }
+										magnify: 2
+									}
 								: {}),
 
 							...(isTouchDevice()
 								? {
-										on: 'toggle',
-								  }
-								: {}),
+										on: 'toggle'
+									}
+								: {})
 						})
 					}
 				}
@@ -152,10 +152,24 @@ const replaceFirstImage = ({ container, image }) => {
 	})
 }
 
+// Fire a window resize to match what WooCommerce does after a gallery/image
+// update. WC core and the gallery integrations layered around it (zoom,
+// flexslider, and plugins like YITH badge positioning, whose
+// force-badge-positioning.js re-clones badges on resize) only recompute their
+// layout/positions on a resize event. Whenever we change the gallery DOM —
+// either in place or by swapping it for a variation — we nudge them so they
+// reflow against the new markup, exactly as they would on a native WC variation
+// image update. The small delay lets the new DOM settle first.
+const triggerGalleryReflow = () => {
+	setTimeout(() => {
+		$(window).trigger('resize')
+	}, 20)
+}
+
 const performInPlaceUpdate = ({
 	container,
 	currentVariationObj,
-	nextVariationObj,
+	nextVariationObj
 }) => {
 	const currentImage = currentVariationObj
 		? {
@@ -163,9 +177,9 @@ const performInPlaceUpdate = ({
 				...(currentVariationObj.image?.src
 					? { ...currentVariationObj.image }
 					: {
-							...currentVariationObj.blocksy_original_image,
-					  }),
-		  }
+							...currentVariationObj.blocksy_original_image
+						})
+			}
 		: (nextVariationObj || {}).blocksy_original_image
 
 	const nextImage = nextVariationObj
@@ -174,9 +188,9 @@ const performInPlaceUpdate = ({
 				...(nextVariationObj.image?.src
 					? { ...nextVariationObj.image }
 					: {
-							...nextVariationObj.blocksy_original_image,
-					  }),
-		  }
+							...nextVariationObj.blocksy_original_image
+						})
+			}
 		: (currentVariationObj || {}).blocksy_original_image
 
 	if (!nextImage) {
@@ -201,7 +215,7 @@ const performInPlaceUpdate = ({
 
 		if (maybePillImage) {
 			let pillIndex = [
-				...container.querySelector(`.flexy-items`).children,
+				...container.querySelector(`.flexy-items`).children
 			].indexOf(maybePillImage.closest('div'))
 
 			const pill =
@@ -221,7 +235,7 @@ const performInPlaceUpdate = ({
 						if (nextVariationObj) {
 							replaceFirstImage({
 								container,
-								image: nextVariationObj.blocksy_original_image,
+								image: nextVariationObj.blocksy_original_image
 							})
 						}
 						pill.click()
@@ -232,7 +246,7 @@ const performInPlaceUpdate = ({
 					if (nextVariationObj) {
 						replaceFirstImage({
 							container,
-							image: nextVariationObj.blocksy_original_image,
+							image: nextVariationObj.blocksy_original_image
 						})
 					}
 
@@ -254,6 +268,8 @@ const performInPlaceUpdate = ({
 			pill.click()
 		}
 	}
+
+	triggerGalleryReflow()
 }
 
 export const mount = (el) => {
@@ -362,13 +378,17 @@ export const mount = (el) => {
 		const canDoInPlaceUpdate =
 			defaultCanDoInPlaceUpdate === '__DEFAULT__'
 				? allVariations &&
-				  [nextVariationObj, currentVariationObj].every((variation) => {
-						if (!variation) {
-							return true
-						}
+					[nextVariationObj, currentVariationObj].every(
+						(variation) => {
+							if (!variation) {
+								return true
+							}
 
-						return variation.blocksy_gallery_source === 'default'
-				  })
+							return (
+								variation.blocksy_gallery_source === 'default'
+							)
+						}
+					)
 				: defaultCanDoInPlaceUpdate
 
 		// TODO: add better check for in place update
@@ -376,69 +396,112 @@ export const mount = (el) => {
 			performInPlaceUpdate({
 				container: currentVariation,
 				nextVariationObj,
-				currentVariationObj,
+				currentVariationObj
 			})
 
 			return
 		}
 
-		const acceptHtml = (html, style) => {
-			const div = document.createElement('div')
-			div.innerHTML = html
-			;[...div.firstElementChild.children].map((el, index) => {
-				if (
+		const acceptHtml = (html, thumbs) => {
+			// Build the fresh gallery markup as real nodes in a detached buffer,
+			// so we can move the real (plugin-mutated) foreign nodes across
+			// instead of recreating everything from an HTML string and orphaning
+			// references other scripts hold onto (e.g. YITH badge positioning
+			// caches its badge nodes once and never re-queries them).
+			const buffer = document.createElement('div')
+			buffer.innerHTML = html
+
+			const oldContainer = currentVariation.querySelector(
+				'.ct-product-gallery-container, .flexy-container'
+			)
+			const newContainer = buffer.querySelector(
+				'.ct-product-gallery-container, .flexy-container'
+			)
+
+			if (oldContainer && newContainer) {
+				const ownedGalleryContainers =
+					'.flexy-container, .container-image-and-badge, .ct-stacked-gallery-container'
+
+				// Foreign = nodes Blocksy didn't render — markup other plugins
+				// inject into the gallery. The concrete case this solves is YITH
+				// WooCommerce Badge Management: it adds `.yith-wcbm-badge` nodes
+				// (via the woocommerce_single_product_image_thumbnail_html filter)
+				// as siblings after `.flexy-container`, toggles their per-variation
+				// visibility client-side, and `force-badge-positioning.js` caches
+				// those exact nodes once at init. If we recreate them on every
+				// variation swap its cache points at detached nodes and the badge
+				// positioning breaks — so we must keep the *real* badge nodes.
+				//
+				// Blocksy's own gallery nodes are: `.flexy-container` and its
+				// `flexy-*` children (`.flexy`, `.flexy-pills`, `.flexy-arrow-*`),
+				// the stacked-gallery wrapper, the `.woocommerce-product-gallery__trigger`
+				// lightbox link, and the single-image `<figure>`. Everything else
+				// is foreign. YITH may also wrap the image+badges in
+				// `.container-image-and-badge`, so collectForeign() recurses into
+				// Blocksy-owned gallery containers to reach foreign nodes wherever
+				// they sit.
+				const isForeign = (el) =>
 					!el.matches(
-						'.flexy-container, .ct-product-gallery-container'
-					)
-				) {
-					el.remove()
-				}
-			})
-			let didInsert = false
-			;[...currentVariation.children].map((el, index) => {
-				if (
-					el.matches(
-						'.flexy-container, .ct-product-gallery-container'
-					)
-				) {
-					if (!didInsert) {
-						didInsert = true
-						el.insertAdjacentHTML(
-							'beforebegin',
-							div.firstElementChild.innerHTML
-						)
+						`${ownedGalleryContainers}, .woocommerce-product-gallery__trigger, figure`
+					) &&
+					![...el.classList].some((c) => c.indexOf('flexy') === 0)
+
+				const collectForeign = (root) => {
+					const foreign = []
+
+					const scan = (node) => {
+						;[...node.children].forEach((child) => {
+							if (child.matches(ownedGalleryContainers)) {
+								scan(child)
+								return
+							}
+
+							if (isForeign(child)) {
+								foreign.push(child)
+							}
+						})
 					}
+
+					scan(root)
+
+					return foreign
 				}
 
-				if (
-					el.matches(
-						'.flexy-container, .ct-product-gallery-container'
-					)
-				) {
-					el.remove()
-				}
-			})
+				// Drop the freshly-rendered duplicates from the new markup, then
+				// move the REAL foreign nodes over — preserving their identity and
+				// any client-side state already applied to them.
+				collectForeign(newContainer).forEach((el) => el.remove())
+				collectForeign(oldContainer).forEach((el) =>
+					newContainer.appendChild(el)
+				)
 
-			currentVariation
-				.closest('.product')
-				.classList.remove('thumbs-left', 'thumbs-bottom')
+				oldContainer.replaceWith(newContainer)
+			}
 
-			if (currentVariation.querySelector('.flexy-container')) {
-				currentVariation.closest('.product').classList.add(style)
+			currentVariation.removeAttribute('data-thumbs')
+
+			if (
+				currentVariation.dataset.gallery === 'default' &&
+				currentVariation.querySelector('.flexy-container')
+			) {
+				currentVariation.dataset.thumbs = thumbs
 			}
 
 			currentVariation.hasLazyLoadClickHoverListener = false
 
 			setTimeout(() => {
 				ctEvents.trigger('blocksy:frontend:init')
+
 				currentVariation.removeAttribute('data-state')
-			}, 10)
+
+				triggerGalleryReflow()
+			}, 20)
 		}
 
 		if (variation.blocksy_gallery_html) {
 			acceptHtml(
 				variation.blocksy_gallery_html,
-				variation.blocksy_gallery_style
+				variation.blocksy_gallery_thumbs
 			)
 
 			return
@@ -453,7 +516,7 @@ export const mount = (el) => {
 			makeUrlFor({
 				variation,
 				productId,
-				isQuickView,
+				isQuickView
 			})
 		)
 			.then((response) => response.json())
@@ -462,7 +525,7 @@ export const mount = (el) => {
 					return
 				}
 
-				acceptHtml(data.html, data.blocksy_gallery_style)
+				acceptHtml(data.html, data.blocksy_gallery_thumbs)
 			})
 	}
 }

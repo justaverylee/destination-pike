@@ -5,6 +5,37 @@ let mounted = false
 
 let addedToCart = false
 
+const fragmentedSelectors = [
+	'.ct-suggested-products--mini-cart',
+	'.ct-shipping-progress-mini-cart',
+]
+
+// A WooCommerce fragment can be re-applied from the localStorage cache long
+// after the feature that produced it was turned off in the Customizer. When
+// that happens its dynamic style is no longer registered server-side, so the
+// markup lands on the page completely unstyled. Detect that case (an element
+// present with no registered dynamic style covering it) and drop the leftover.
+const removeUnstyledFragments = () => {
+	if (!ct_localizations.dynamic_styles_selectors) {
+		return
+	}
+
+	fragmentedSelectors.forEach((selector) => {
+		;[...document.querySelectorAll(selector)].forEach((el) => {
+			const hasRegisteredStyles =
+				ct_localizations.dynamic_styles_selectors.some((descriptor) =>
+					el.matches(descriptor.selector)
+				)
+
+			if (hasRegisteredStyles) {
+				return
+			}
+
+			el.remove()
+		})
+	})
+}
+
 export const mount = (el, { event }) => {
 	if (!$) return
 
@@ -28,6 +59,11 @@ export const mount = (el, { event }) => {
 	}
 
 	mounted = true
+
+	// This chunk loads lazily (on cart hover/touch), which can happen after the
+	// fragments were already applied from cache on page load — so run a cleanup
+	// pass right away, before the panel opens, in addition to the events below.
+	removeUnstyledFragments()
 
 	$(document.body).on('adding_to_cart', () =>
 		[...document.querySelectorAll(selector)].map((cart) => {
@@ -144,6 +180,12 @@ export const mount = (el, { event }) => {
 		})
 	})
 
+	;['wc_fragments_loaded', 'wc_fragments_refreshed'].forEach((event) => {
+		$(document.body).on(event, () => {
+			setTimeout(() => removeUnstyledFragments())
+		})
+	})
+
 	$(document.body).on('click', '.remove_from_cart_button', {}, (e) => {
 		const maybeItem = e.target.closest('.woocommerce-mini-cart-item')
 
@@ -164,6 +206,9 @@ export const mount = (el, { event }) => {
 				button[0].closest('li').remove()
 			} catch (e) {}
 		})
+
+		$(document).trigger('wc_update_cart')
+		$(document.body).trigger('update_checkout')
 	})
 
 	$(document.body).on('click', '.remove_from_cart_button', (e) => {

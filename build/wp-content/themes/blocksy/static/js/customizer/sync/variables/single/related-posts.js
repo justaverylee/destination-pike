@@ -12,7 +12,7 @@ import { handleBackgroundOptionFor } from '../../variables/background'
 import { typographyOption } from '../../variables/typography'
 import { getSingleShareBoxVariables } from './share-box'
 
-import { maybePromoteScalarValueIntoResponsive } from 'customizer-sync-helpers/dist/promote-into-responsive'
+import { maybePromoteScalarValueIntoResponsive } from '@creative-themes/customizer-sync-helpers/dist/promote-into-responsive'
 
 let prefix = getPrefixFor()
 

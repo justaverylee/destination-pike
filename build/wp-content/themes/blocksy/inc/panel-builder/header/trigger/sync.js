@@ -67,14 +67,14 @@ ctEvents.on(
 			triggerSecondColor: [
 				{
 					selector: assembleSelector(getRootSelectorFor({ itemId })),
-					variable: 'secondColor',
+					variable: 'toggle-button-second-color',
 					type: 'color:default',
 					responsive: true,
 				},
 
 				{
 					selector: assembleSelector(getRootSelectorFor({ itemId })),
-					variable: 'secondColorHover',
+					variable: 'toggle-button-second-color-hover',
 					type: 'color:hover',
 					responsive: true,
 				},
@@ -177,7 +177,7 @@ ctEvents.on(
 						})
 					),
 
-					variable: 'secondColor',
+					variable: 'toggle-button-second-color',
 					type: 'color:default',
 					responsive: true,
 				},
@@ -191,7 +191,7 @@ ctEvents.on(
 						})
 					),
 
-					variable: 'secondColorHover',
+					variable: 'toggle-button-second-color-hover',
 					type: 'color:hover',
 					responsive: true,
 				},
@@ -263,7 +263,7 @@ ctEvents.on(
 							to_add: '[data-sticky*="yes"]',
 						})
 					),
-					variable: 'secondColor',
+					variable: 'toggle-button-second-color',
 					type: 'color:default',
 					responsive: true,
 				},
@@ -276,7 +276,7 @@ ctEvents.on(
 							to_add: '[data-sticky*="yes"]',
 						})
 					),
-					variable: 'secondColorHover',
+					variable: 'toggle-button-second-color-hover',
 					type: 'color:hover',
 					responsive: true,
 				},

@@ -3,6 +3,14 @@ import { isTouchDevice } from './frontend/helpers/is-touch-device'
 import { isIosDevice } from './frontend/helpers/is-ios-device'
 import $ from 'jquery'
 
+const getSelectorEls = (selector) => {
+	try {
+		return document.querySelectorAll(selector)
+	} catch (e) {
+		return []
+	}
+}
+
 const loadSingleEntryPoint = ({
 	els,
 	events,
@@ -60,7 +68,7 @@ const loadSingleEntryPoint = ({
 			...(Array.isArray(selector)
 				? selector
 				: typeof selector === 'string'
-					? document.querySelectorAll(selector)
+					? getSelectorEls(selector)
 					: [selector])
 		],
 		[]

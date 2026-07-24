@@ -8,7 +8,18 @@ const sendLocation = () => {
 		}
 
 		if ($) {
-			$('.wc-tabs-wrapper, .woocommerce-tabs, #rating').trigger('init')
+			$('.wc-tabs-wrapper, .woocommerce-tabs').trigger('init')
+
+			$('#rating').each((_, el) => {
+				const rating = $(el)
+				const ratingWrapper = rating.closest('.comment-form-rating')
+
+				if (ratingWrapper.find('p.stars').length) {
+					return
+				}
+
+				rating.trigger('init')
+			})
 		}
 
 		window.ctEvents.trigger('blocksy:frontend:init')

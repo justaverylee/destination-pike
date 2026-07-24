@@ -1,4 +1,4 @@
-import { handleVariablesFor } from 'customizer-sync-helpers/dist/simplified'
+import { handleVariablesFor } from '@creative-themes/customizer-sync-helpers/dist/simplified'
 
 export const listenToVariables = () => {
 	handleVariablesFor({

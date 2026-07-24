@@ -395,7 +395,7 @@ export const mount = (el, { event: mountEvent }) => {
 				if (
 					maybeTrigger.closest('.ct-media-container') &&
 					maybeTrigger.closest('.flexy-items') &&
-					maybeTrigger.closest('.ct-columns-top-gallery')
+					galleryWrapper.dataset.gallery === 'columns-top'
 				) {
 					isGalleryEnabled &&
 						openPhotoswipeFor(

@@ -1,7 +1,7 @@
 import { getPrefixFor, watchOptionsWithPrefix, getOptionFor } from '../helpers'
 import { makeVariablesWithCondition } from '../helpers/variables-with-conditions'
 import { handleBackgroundOptionFor } from '../variables/background'
-import { maybePromoteScalarValueIntoResponsive } from 'customizer-sync-helpers/dist/promote-into-responsive'
+import { maybePromoteScalarValueIntoResponsive } from '@creative-themes/customizer-sync-helpers/dist/promote-into-responsive'
 
 const getSelectorSuffixFor = (prefix) => {
 	let selectorSuffix = '[class*="ct-container"] > article[class*="post"]'

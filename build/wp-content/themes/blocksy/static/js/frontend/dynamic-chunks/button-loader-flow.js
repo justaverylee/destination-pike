@@ -5,7 +5,7 @@ export const bootButtonLoaderFlow = (args = {}) => {
 		chunk: null,
 		loadedChunks: {},
 
-		ensureAtLeast: 500,
+		ensureAtLeast: 250,
 
 		...args,
 	}

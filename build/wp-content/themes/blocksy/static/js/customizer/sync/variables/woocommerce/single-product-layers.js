@@ -538,13 +538,13 @@ export const getWooSingleLayersVariablesFor = () => ({
 	},
 
 	entry_summary_container_border: {
-		selector: '.product[class*=top-gallery] .entry-summary',
+		selector: '.product-entry-wrapper:has([data-gallery="top"], [data-gallery="columns-top"]) .entry-summary',
 		variable: 'container-border',
 		type: 'border',
 	},
 
 	entry_summary_container_border_radius: {
-		selector: '.product[class*=top-gallery] .entry-summary',
+		selector: '.product-entry-wrapper:has([data-gallery="top"], [data-gallery="columns-top"]) .entry-summary',
 		type: 'spacing',
 		variable: 'container-border-radius',
 		responsive: true,

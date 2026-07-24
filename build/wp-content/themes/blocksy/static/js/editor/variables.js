@@ -1,6 +1,6 @@
 import { handleBackgroundOptionFor } from '../customizer/sync/variables/background'
 import { withKeys } from '../customizer/sync/helpers'
-import { maybePromoteScalarValueIntoResponsive } from 'customizer-sync-helpers/dist/promote-into-responsive'
+import { maybePromoteScalarValueIntoResponsive } from '@creative-themes/customizer-sync-helpers/dist/promote-into-responsive'
 
 const isContentBlock = document.body.classList.contains(
 	'post-type-ct_content_block'
