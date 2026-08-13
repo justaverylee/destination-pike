@@ -12,15 +12,16 @@ docker run -d --name mariadb \
   bitnami/mariadb:latest
 
 docker run -d --name wordpress \
-  -p 8080:8080 -p 8443:8443 \
-  --env ALLOW_EMPTY_PASSWORD=yes \
-  --env WORDPRESS_DATABASE_USER=bn_wordpress \
-  --env WORDPRESS_DATABASE_PASSWORD=bitnami \
-  --env WORDPRESS_DATABASE_NAME=bitnami_wordpress \
-  --env WP_HOME=docker.home \
+  -p 80:80 --pull always \
   --network wordpress-network \
-  --volume wordpress_data:/bitnami/wordpress \
-  bitnami/wordpress:latest
+  --env WORDPRESS_DB_HOST=mariadb \
+  --env WORDPRESS_DB_USER=bn_wordpress \
+  --env WORDPRESS_DB_PASSWORD=bitnami \
+  --env WORDPRESS_DB_NAME=bitnami_wordpress \
+  --env WP_SITEURL=http://localhost \
+  --env TMPDIR=/var/www/html/wp-content/tmp/ \
+  -v /Users/zggz/Desktop/destination-pike-shared/wp-content/:/var/www/html/wp-content \
+  wordpress:latest
 
 # username is now user
 # password is not bitnami
