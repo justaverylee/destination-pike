@@ -55,7 +55,7 @@ async function post(request, env) {
 
   await insertWord(env, name, word);
 
-  return Response.redirect('/join-the-newsletter', 303);
+  return Response.redirect('https://destinationpike.com/join-the-newsletter', 303);
 }
 
 async function insertWord(env, name, word) {
